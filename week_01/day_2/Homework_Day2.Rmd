@@ -1,0 +1,104 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Question 1
+```{r}
+stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+```
+
+```{r}
+days_of_week <- c( "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+```
+
+```{r}
+stock_prices
+```
+
+```{r}
+days_of_week
+```
+Question 2
+```{r}
+day_of_week_factor <- factor(days_of_week)
+```
+
+```{r}
+class(day_of_week_factor)
+```
+
+```{r}
+class(days_of_week)
+```
+```{r}
+named_stock_prices <- stock_prices
+```
+```{r}
+names(named_stock_prices) <- c(days_of_week)
+```
+
+```{r}
+named_stock_prices
+```
+
+Question 3
+
+```{r}
+stock_data <- data.frame(stock_prices , days_of_week)
+```
+
+```{r}
+stock_data
+```
+
+Question 4
+
+```{r}
+stock_list <- list( stock_prices , days_of_week , stock_data)
+```
+```{r}
+stock_list
+class(stock_list)
+```
+2 Part 2 
+Question 1
+
+```{r}
+stock_prices
+```
+```{r}
+stock_prices[4:6]
+```
+```{r}
+grater_than_30 <- stock_prices > 30
+
+```
+```{r}
+grater_than_30[ stock_prices > 30]
+```
+
+Question 2
+
+```{r}
+stock_data
+```
+
+```{r}
+stock_data [ , 2]
+```
+
+```{r}
+subset(stock_data, stock_prices < 25)
+```
+```{r}
+stock_data[ , 1]
+```
+
+```{r}
+stock_data[ 3, ]
+```
+```{r}
+stock_data[ 3, 1]
+```
+
+Question 4
