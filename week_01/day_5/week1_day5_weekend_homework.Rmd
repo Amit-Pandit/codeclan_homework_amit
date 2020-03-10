@@ -112,14 +112,14 @@ Create a new vector which is equal to:
 “Wife older” whenever the wife’s age is highest “Husband older” when the husband’s age is highest “Same age” when they are the same age
 
 ```{r}
-wife_age <- as.factor(c(29L, 30L, 36L, 31L, 22L))
+wife_age <- as.factor (c(29L, 30L, 36L, 31L, 22L))
 husband_age <- as.factor(c(28L, 35L, 32L, 31L, 29L))
 
 wife_husband_age_comparison <- 
   
 case_when(
   wife_age > husband_age ~ "Wife Older",
-  wife_age = husband_age ~ "Same Age",
+  wife_age == husband_age ~ "Same Age",
   wife_age < husband_age ~ "Husband Older"
 )
 
