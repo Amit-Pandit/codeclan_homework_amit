@@ -1,0 +1,24 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+1.2 Remote PostgreSQL connections
+
+```{r}
+library(RPostgreSQL)
+
+library(keyring)
+
+keyring_unlock(keyring = "remote_homework")
+
+username <- key_get(service = "omni_postgresql_username", keyring = "remote_homework")
+
+password <- key_get(service = "omni_postgresql_password", keyring = "remote_homework")
+
+keyring_lock(keyring = "remote_homework")
+
+my_db_connection <- dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname='cmvhbdgdk', host='34.245.37.126')
+
+```
+

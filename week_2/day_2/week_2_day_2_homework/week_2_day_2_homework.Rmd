@@ -1,0 +1,50 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+1.1 Local PostgreSQL connections
+
+Q.1 Create a local PostgreSQL database called wrestling
+
+Ans - Type in terminal psql : CREATE DATABASE wrestling;
+
+Q.2 Seed the wrestling database from the file wrestling.sql using the psql PostgreSQL command line interface.
+Ans - touch wrestling.sql
+
+```{r}
+library(keyring)
+
+library(RPostgreSQL)
+
+keyring_unlock("wrestling")
+
+username <- key_get("wrestling_postgresql_username", keyring = "wrestling") 
+
+password <- key_get("wrestling_postgresql_password", keyring = "wrestling")
+
+keyring_lock("wrestling")
+
+#db_connect <- dbConnect(drv = PostgreSQL(max.con = 2), user = username, password = password, dbname = "wrestling", host = "localhost")
+
+my_db_connection <- dbConnect(drv = PostgreSQL(max.con = 2), user = username, password = password, dbname = 'wrestling', host = 'localhost')
+```
+
+Q.3 Using the R connection you just created, write and execute a SQL query to return all the wrestlers in the wrestlers table.
+
+```{r}
+dbGetQuery( conn = db_connect,
+            "SELECT * FROM wrestlers")
+```
+
+Q.4 Explore the columns stored in the table. State which data type you think each column stores.
+
+```{r}
+data <- dbGetQuery( conn = db_connection,
+                  statement = "SELECT * FROM employees")
+
+class(data)
+```
+
+
+
+
