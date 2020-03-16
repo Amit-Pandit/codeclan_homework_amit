@@ -1,0 +1,161 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Create a connectoion from R to your local_employees database
+```{r}
+library(keyring)
+
+library(RPostgreSQL)
+
+keyring_unlock(keyring = "local2")
+
+username <- key_get(service = "acme_employees_username", keyring = "local2")
+
+password <- key_get(service = "acme_employees_password", keyring = "local2")
+
+keyring_lock(keyring = "local2")
+
+# connection to the database
+my_db_connection <- dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname = 'acme_employees', host = 'localhost')
+
+rm(username, password)
+```
+
+Now use SQL queries within R (i.e. use dbGetQuery()) to answer all of the following questions.
+
+Create a new data.frame containing the details of all employees held in the database
+
+First lets Read the DB acme_employees
+
+```{r}
+dbListTables(conn = my_db_connection)
+```
+
+```{r}
+
+dbListFields(conn = my_db_connection, name = "employees")
+```
+
+Q : Create a new data.frame containing the details of all employees held in the database
+
+
+```{r}
+employees_acme_employees <- dbGetQuery (my_db_connection, 
+           "SELECT *
+           FROM employees")
+```
+
+```{r}
+employees_acme_employees
+
+class(employees_acme_employees)
+    
+```
+
+
+
+Q. Retrieve the records for all employees again, but this time add a field full_name containing the first_name and last_name of each employee separated by a space.
+```{r}
+
+dbGetQuery( my_db_connection, 
+           "SELECT * , CONCAT(first_name, ' ', last_name) AS full_name 
+           FROM employees")
+
+
+```
+
+This could also be executed as :
+
+```{r}
+
+dbGetQuery( my_db_connection, 
+           "SELECT 
+           id, first_name, last_name , CONCAT(first_name, ' ', last_name) AS full_name , team_id 
+           FROM employees
+           
+           WHERE first_name IS NOT NULL AND last_name IS NOT NULL" )
+
+```
+
+Q . Retrieve the details of all employees again, but this time listing their team name (as team_name), rather than their team_id.
+
+
+```{r}
+
+dbGetQuery( my_db_connection, 
+           "SELECT *
+            WHERE [ names( )
+            FROM employees")
+
+```
+
+[Bit Harder] Do a breakdown of the number of employees per team (here we want two columns: team_name and num_employees). Order the table in decreasing number of employees. Include all teams, even if they have no employees.
+
+
+```{r}
+
+dbGetQuery(my_db_connection, 
+           "SELECT DISTINCT(team_id) 
+            FROM employees")
+           
+#         WHERE first_name IS NOT NULL AND last_name IS NOT NULL" )
+
+
+```
+
+2 Extensions
+2.1 Harder SQL queries
+Which of the employees provided the most recent feedback? What was the date of this feedback?
+
+
+
+```{r}
+dbListFields(conn = my_db_connection, name = "feedbacks")
+
+acme_employees_latest_feedback <- dbGetQuery (my_db_connection, 
+           "SELECT *
+           FROM feedbacks
+           ORDER BY date DESC
+           LIMIT 1")
+
+acme_employees_latest_feedback
+
+```
+
+You are chatting with one of the AcmeCorp employees, and she mentions that one of the teams in the corporation has some employees whose first_name contains only their first initial, e.g. “D” instead of “Dionne”, “C” instead of “Charles” (they had a really formal administrator a few years back). Can you find the name of the team that she is most likely referring to (i.e. which team has the highest number of employees with single initial first_names)`?
+
+```{r}
+dbListFields(conn = my_db_connection, name = "teams")
+```
+
+```{r}
+teams_acme_employees <- dbGetQuery (my_db_connection, 
+           "SELECT *
+           FROM teams")
+
+teams_acme_employees
+```
+
+```{r}
+#first use the cheat functio to get the names with only initial, then use the group function then the count function..you can then pull out team name from teams df by using the join function...
+
+employees_acme_employees 
+
+
+```
+
+```{r}
+
+
+
+max_first_name_as_initial <- dbGetQuery(my_db_connection, 
+                "SELECT first_name, id
+                FROM employees_acme_employees AS e INNER JOIN teams_acme_employees AS t
+                ON e.team_id = t.id
+                WHERE first_name = '-' ")
+
+
+```
+

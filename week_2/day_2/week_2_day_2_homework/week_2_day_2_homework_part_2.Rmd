@@ -10,15 +10,15 @@ library(RPostgreSQL)
 
 library(keyring)
 
-keyring_unlock(keyring = "remote_homework")
+keyring_unlock(keyring = "remote")
 
-username <- key_get(service = "omni_postgresql_username", keyring = "remote_homework")
+username <- key_get(service = "remote_username_2", keyring = "remote")
 
-password <- key_get(service = "omni_postgresql_password", keyring = "remote_homework")
+password <- key_get(service = "remote_password_2", keyring = "remote")
 
-keyring_lock(keyring = "remote_homework")
+keyring_lock(keyring = "remote")
 
-my_db_connection <- dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname='cmvhbdgdk', host='34.245.37.126')
+my_db_connection <- dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname='mvhbdgdk', host='34.245.37.126')
 
 ```
 

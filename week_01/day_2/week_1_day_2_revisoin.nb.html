@@ -1749,23 +1749,180 @@ summary {
 
 
 <!-- rnb-text-begin -->
-<p>1.2 Remote PostgreSQL connections</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfZGJfY29ubmVjdGlvbiA8LSBkYkNvbm5lY3QoZHJ2ID0gUG9zdGdyZVNRTChtYXguY29uID0gMSksIHVzZXIgPSB1c2VybmFtZSwgcGFzc3dvcmQgPSBwYXNzd29yZCwgZGJuYW1lPSdtdmhiZGdkaycsIGhvc3Q9JzM0LjI0NS4zNy4xMjYnKVxuXG5gYGAifQ== -->
-<pre class="r"><code>my_db_connection &lt;- dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname='mvhbdgdk', host='34.245.37.126')
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5wcmltZXMgPC0gYygyLCAzLCA1LCA3LCAxMSlcblxucHJpbWVzIDwtIGMocHJpbWVzICwgMTMsIDE3KVxuXG5wcmltZXNcblxuYGBgIn0= -->
+<pre class="r"><code>
+primes &lt;- c(2, 3, 5, 7, 11)
+
+primes &lt;- c(primes , 13, 17)
+
+primes
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcG9zdGdyZXNxbE5ld0Nvbm5lY3Rpb24oZHJ2LCAuLi4pIDogXG4gIFJTLURCSSBkcml2ZXI6IChjb3VsZCBub3QgY29ubmVjdCBtdmhiZGdka0AzNC4yNDUuMzcuMTI2OjU0MzIgb24gZGJuYW1lIFwibXZoYmRnZGtcIjogRkFUQUw6ICB0b28gbWFueSBjb25uZWN0aW9ucyBmb3Igcm9sZSBcIm12aGJkZ2RrXCJcbilcbiJ9 -->
-<pre><code>Error in postgresqlNewConnection(drv, ...) : 
-  RS-DBI driver: (could not connect mvhbdgdk@34.245.37.126:5432 on dbname &quot;mvhbdgdk&quot;: FATAL:  too many connections for role &quot;mvhbdgdk&quot;
-)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>TASK</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5cbnByaW1lc19pbnRpZ2VyIDwtIGMoMkwsIDNMLDVMLCA3TCwgMTFMLCAxM0wsIDE3TClcblxucHJpbWVzX2ludGlnZXJcbmBgYCJ9 -->
+<pre class="r"><code>
+
+primes_intiger &lt;- c(2L, 3L,5L, 7L, 11L, 13L, 17L)
+
+primes_intiger</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdICAyICAzICA1ICA3IDExIDEzIDE3XG4ifQ== -->
+<pre><code>[1]  2  3  5  7 11 13 17</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbWVzX2ludGlnZXIgKiAxMFxuYGBgIn0= -->
+<pre class="r"><code>primes_intiger * 10</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdICAyMCAgMzAgIDUwICA3MCAxMTAgMTMwIDE3MFxuIn0= -->
+<pre><code>[1]  20  30  50  70 110 130 170</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYygxLCAyKSArIGMoMSwgMiwgMywgNClcbmBgYCJ9 -->
+<pre class="r"><code>c(1, 2) + c(1, 2, 3, 4)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIgNCA0IDZcbiJ9 -->
+<pre><code>[1] 2 4 4 6</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYyggXCJhXCIgLCBcImFcIiwgXCJiXCIsIFwiYVwiKVxuYGBgIn0= -->
+<pre class="r"><code>c( &quot;a&quot; , &quot;a&quot;, &quot;b&quot;, &quot;a&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYVwiIFwiYVwiIFwiYlwiIFwiYVwiXG4ifQ== -->
+<pre><code>[1] &quot;a&quot; &quot;a&quot; &quot;b&quot; &quot;a&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXMuZmFjdG9yKGMoXCJhXCIgLCBcImFcIiwgXCJiXCIsIFwiYVwiKSlcbmBgYCJ9 -->
+<pre class="r"><code>as.factor(c(&quot;a&quot; , &quot;a&quot;, &quot;b&quot;, &quot;a&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIGEgYSBiIGFcbkxldmVsczogYSBiXG4ifQ== -->
+<pre><code>[1] a a b a
+Levels: a b</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>TASK</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnJ1aXQgPC0gYyhcImFwcGxlXCIsIFwiYmFuYWJhXCIsIFwiY2hlcnJ5XCIpXG5cbmZydWl0IDwtIGMoIGZydWl0LCBcImRyYWdvbiBmcnVpdFwiKVxuXG5hcy5mYWN0b3IgKGZydWl0KVxuYGBgIn0= -->
+<pre class="r"><code>fruit &lt;- c(&quot;apple&quot;, &quot;banaba&quot;, &quot;cherry&quot;)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKMS4yIFJlbW90ZSBQb3N0Z3JlU1FMIGNvbm5lY3Rpb25zCgpgYGB7cn0KbGlicmFyeShSUG9zdGdyZVNRTCkKCmxpYnJhcnkoa2V5cmluZykKCmtleXJpbmdfdW5sb2NrKGtleXJpbmcgPSAicmVtb3RlIikKCnVzZXJuYW1lIDwtIGtleV9nZXQoc2VydmljZSA9ICJyZW1vdGVfdXNlcm5hbWVfMiIsIGtleXJpbmcgPSAicmVtb3RlIikKCnBhc3N3b3JkIDwtIGtleV9nZXQoc2VydmljZSA9ICJyZW1vdGVfcGFzc3dvcmRfMiIsIGtleXJpbmcgPSAicmVtb3RlIikKCmtleXJpbmdfbG9jayhrZXlyaW5nID0gInJlbW90ZSIpCgpteV9kYl9jb25uZWN0aW9uIDwtIGRiQ29ubmVjdChkcnYgPSBQb3N0Z3JlU1FMKG1heC5jb24gPSAxKSwgdXNlciA9IHVzZXJuYW1lLCBwYXNzd29yZCA9IHBhc3N3b3JkLCBkYm5hbWU9J212aGJkZ2RrJywgaG9zdD0nMzQuMjQ1LjM3LjEyNicpCgpgYGAKCg==</div>
+fruit &lt;- c( fruit, &quot;dragon fruit&quot;)
+
+as.factor (fruit)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIGFwcGxlICAgICAgICBiYW5hYmEgICAgICAgY2hlcnJ5ICAgICAgIGRyYWdvbiBmcnVpdFxuTGV2ZWxzOiBhcHBsZSBiYW5hYmEgY2hlcnJ5IGRyYWdvbiBmcnVpdFxuIn0= -->
+<pre><code>[1] apple        banaba       cherry       dragon fruit
+Levels: apple banaba cherry dragon fruit</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnJ1aXRcbmBgYCJ9 -->
+<pre class="r"><code>fruit</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYXBwbGVcIiAgICAgICAgXCJiYW5hYmFcIiAgICAgICBcImNoZXJyeVwiICAgICAgIFwiZHJhZ29uIGZydWl0XCJcbiJ9 -->
+<pre><code>[1] &quot;apple&quot;        &quot;banaba&quot;       &quot;cherry&quot;       &quot;dragon fruit&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Task: Create a sequence going from 10 to 100 in steps of 5. Name this vector answer_1.</p>
+<p>Make a vector which repeats the number 8 six times. Name this vector answer_2.</p>
+<p>Use rep() to make a vector like below. Name the vector answer_3.</p>
+<div id="section" class="section level2">
+<h2>[1] 2 2 2 3 3 3 4 4 4</h2>
+<p>Make a vector by joining the answer_1, answer_2 and answer_3 vectors together.</p>
+<p>What does sort() do to a logical vector?</p>
+<p>Compare the sum of answer_1 with the sum of answer_1 reversed.</p>
+<p>What happens when you call table() on a vector of unique elements.</p>
+<p>What does sum() do to a logical vector?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW5zd2VyXzRcblxuYGBgIn0= -->
+<pre class="r"><code>answer_4
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAgMTAgIDE1ICAyMCAgMjUgIDMwICAzNSAgNDAgIDQ1ICA1MCAgNTUgIDYwICA2NSAgNzAgIDc1ICA4MCAgODUgIDkwICA5NSAxMDAgICA4ICAgOFxuWzIyXSAgIDggICA4ICAgOCAgIDggICAyICAgMiAgIDIgICAzICAgMyAgIDMgICA0ICAgNCAgIDRcbiJ9 -->
+<pre><code> [1]  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100   8   8
+[22]   8   8   8   8   2   2   2   3   3   3   4   4   4</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>TASK</p>
+<p>For each of these questions, think about the most efficient way of finding the answer.</p>
+<p>First manually calculate the answer to this sum, then convert it into R code and check that R gets the same answer as you. 3×2+22−5</p>
+<p>Write R code to subtract 2 from each of the following numbers: 14, 18, 5.</p>
+<p>Multiply the first number in this list by 1, the second by 2 and the third by 3: 5, 2, 3</p>
+<p>For the following numbers, what is their remainder when divided by 5: 11, 17, 23.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYygxMSwgMTcsIDIzKSAlJSA1XG5cbmBgYCJ9 -->
+<pre class="r"><code>c(11, 17, 23) %% 5
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEgMiAzXG4ifQ== -->
+<pre><code>[1] 1 2 3</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Task - 10 minutes</p>
+<p>Prove that 1 is not equal to 2. Does answer_3 contain a 5? Make a vector that shows whether each value in answer_1 is divisible by 10. How many elements of answer_1 are greater than or equal to 30?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuMSA9PSAyXG5gYGAifQ== -->
+<pre class="r"><code>1 == 2</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuNSAlaW4lIGFuc3dlcl8zXG5gYGAifQ== -->
+<pre class="r"><code>5 %in% answer_3</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG4ifQ== -->
+<pre><code>[1] FALSE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYyhhbnN3ZXJfMSAlJSAxMCA9PSAwKVxuYGBgIn0= -->
+<pre class="r"><code>c(answer_1 %% 10 == 0)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRVxuWzE0XSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRSBGQUxTRSAgVFJVRVxuIn0= -->
+<pre><code> [1]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE
+[14] FALSE  TRUE FALSE  TRUE FALSE  TRUE</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtIChhbnN3ZXJfMSA+PSAzMCApXG5gYGAifQ== -->
+<pre class="r"><code>sum (answer_1 &gt;= 30 )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDE1XG4ifQ== -->
+<pre><code>[1] 15</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Task - 5 minutes</p>
+<p>Select the third element of answer_1. Select everything except the last element of answer_1. Select all the elements of answer_1 which are less than 25.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW5zd2VyXzFbYW5zd2VyXzEgPCAyNV1cblxuYGBgIn0= -->
+<pre class="r"><code>answer_1[answer_1 &lt; 25]
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwIDE1IDIwXG4ifQ== -->
+<pre><code>[1] 10 15 20</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CgpwcmltZXMgPC0gYygyLCAzLCA1LCA3LCAxMSkKCnByaW1lcyA8LSBjKHByaW1lcyAsIDEzLCAxNykKCnByaW1lcwoKYGBgCgpUQVNLCgpgYGB7cn0KCgpwcmltZXNfaW50aWdlciA8LSBjKDJMLCAzTCw1TCwgN0wsIDExTCwgMTNMLCAxN0wpCgpwcmltZXNfaW50aWdlcgpgYGAKCmBgYHtyfQpwcmltZXNfaW50aWdlciAqIDEwCmBgYAoKYGBge3J9CmMoMSwgMikgKyBjKDEsIDIsIDMsIDQpCmBgYAoKYGBge3J9CmMoICJhIiAsICJhIiwgImIiLCAiYSIpCgphcy5mYWN0b3IoYygiYSIgLCAiYSIsICJiIiwgImEiKSkKYGBgCgpUQVNLCgpgYGB7cn0KZnJ1aXQgPC0gYygiYXBwbGUiLCAiYmFuYWJhIiwgImNoZXJyeSIpCgpmcnVpdCA8LSBjKCBmcnVpdCwgImRyYWdvbiBmcnVpdCIpCgphcy5mYWN0b3IgKGZydWl0KQoKZnJ1aXQKYGBgClRhc2s6CkNyZWF0ZSBhIHNlcXVlbmNlIGdvaW5nIGZyb20gMTAgdG8gMTAwIGluIHN0ZXBzIG9mIDUuIE5hbWUgdGhpcyB2ZWN0b3IgYW5zd2VyXzEuCgpNYWtlIGEgdmVjdG9yIHdoaWNoIHJlcGVhdHMgdGhlIG51bWJlciA4IHNpeCB0aW1lcy4gTmFtZSB0aGlzIHZlY3RvciBhbnN3ZXJfMi4KClVzZSByZXAoKSB0byBtYWtlIGEgdmVjdG9yIGxpa2UgYmVsb3cuIE5hbWUgdGhlIHZlY3RvciBhbnN3ZXJfMy4KCiMjIFsxXSAyIDIgMiAzIDMgMyA0IDQgNApNYWtlIGEgdmVjdG9yIGJ5IGpvaW5pbmcgdGhlIGFuc3dlcl8xLCBhbnN3ZXJfMiBhbmQgYW5zd2VyXzMgdmVjdG9ycyB0b2dldGhlci4KCldoYXQgZG9lcyBzb3J0KCkgZG8gdG8gYSBsb2dpY2FsIHZlY3Rvcj8KCkNvbXBhcmUgdGhlIHN1bSBvZiBhbnN3ZXJfMSB3aXRoIHRoZSBzdW0gb2YgYW5zd2VyXzEgcmV2ZXJzZWQuCgpXaGF0IGhhcHBlbnMgd2hlbiB5b3UgY2FsbCB0YWJsZSgpIG9uIGEgdmVjdG9yIG9mIHVuaXF1ZSBlbGVtZW50cy4KCldoYXQgZG9lcyBzdW0oKSBkbyB0byBhIGxvZ2ljYWwgdmVjdG9yPwoKYGBge3J9CmFuc3dlcl8xIDwtIHNlcSggMTBMLCAxMDBMLCBieSA9IDVMICkKCmFuc3dlcl8xCgphbnN3ZXJfMiA8LSByZXAoIDggLCB0aW1lcyA9IDYpCgphbnN3ZXJfMgoKYW5zd2VyXzMgPC0gcmVwKCBjKDIsIDMsIDQpLCBlYWNoID0gMykKCmFuc3dlcl8zCgphbnN3ZXJfNCA8LSAoYyhhbnN3ZXJfMSwgYW5zd2VyXzIsIGFuc3dlcl8zKSkKCmFuc3dlcl80CmBgYAoKVEFTSwoKCkZvciBlYWNoIG9mIHRoZXNlIHF1ZXN0aW9ucywgdGhpbmsgYWJvdXQgdGhlIG1vc3QgZWZmaWNpZW50IHdheSBvZiBmaW5kaW5nIHRoZSBhbnN3ZXIuCgpGaXJzdCBtYW51YWxseSBjYWxjdWxhdGUgdGhlIGFuc3dlciB0byB0aGlzIHN1bSwgdGhlbiBjb252ZXJ0IGl0IGludG8gUiBjb2RlIGFuZCBjaGVjayB0aGF0IFIgZ2V0cyB0aGUgc2FtZSBhbnN3ZXIgYXMgeW91Lgozw5cyKzIy4oiSNQoKV3JpdGUgUiBjb2RlIHRvIHN1YnRyYWN0IDIgZnJvbSBlYWNoIG9mIHRoZSBmb2xsb3dpbmcgbnVtYmVyczogMTQsIDE4LCA1LgoKTXVsdGlwbHkgdGhlIGZpcnN0IG51bWJlciBpbiB0aGlzIGxpc3QgYnkgMSwgdGhlIHNlY29uZCBieSAyIGFuZCB0aGUgdGhpcmQgYnkgMzogNSwgMiwgMwoKRm9yIHRoZSBmb2xsb3dpbmcgbnVtYmVycywgd2hhdCBpcyB0aGVpciByZW1haW5kZXIgd2hlbiBkaXZpZGVkIGJ5IDU6IDExLCAxNywgMjMuCgpgYGB7cn0KYyggMyoyKyAyXjIgLTUpCgpjKDE0LCA4LCA1KSAtIDIKCmMoIDUsIDIsIDMpICogYygxLCAyICwzKQoKYygxMSwgMTcsIDIzKSAlJSA1CmBgYApUYXNrIC0gMTAgbWludXRlcwoKUHJvdmUgdGhhdCAxIGlzIG5vdCBlcXVhbCB0byAyLgpEb2VzIGFuc3dlcl8zIGNvbnRhaW4gYSA1PwpNYWtlIGEgdmVjdG9yIHRoYXQgc2hvd3Mgd2hldGhlciBlYWNoIHZhbHVlIGluIGFuc3dlcl8xIGlzIGRpdmlzaWJsZSBieSAxMC4KSG93IG1hbnkgZWxlbWVudHMgb2YgYW5zd2VyXzEgYXJlIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byAzMD8KCmBgYHtyfQoxID09IDIKCjUgJWluJSBhbnN3ZXJfMwoKYyhhbnN3ZXJfMSAlJSAxMCA9PSAwKQoKc3VtIChhbnN3ZXJfMSA+PSAzMCApCmBgYApUYXNrIC0gNSBtaW51dGVzCgpTZWxlY3QgdGhlIHRoaXJkIGVsZW1lbnQgb2YgYW5zd2VyXzEuClNlbGVjdCBldmVyeXRoaW5nIGV4Y2VwdCB0aGUgbGFzdCBlbGVtZW50IG9mIGFuc3dlcl8xLgpTZWxlY3QgYWxsIHRoZSBlbGVtZW50cyBvZiBhbnN3ZXJfMSB3aGljaCBhcmUgbGVzcyB0aGFuIDI1LgpgYGB7cn0KYW5zd2VyXzFbM10KCmFuc3dlcl8xWy0gbGVuZ3RoKGFuc3dlcl8xKV0KCmFuc3dlcl8xW2Fuc3dlcl8xIDwgMjVdCmBgYAoK</div>
 
 
 
@@ -1812,7 +1969,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("week_2_day_2_homework_part_2.Rmd");
+  window.initializeSourceEmbed("week_1_day_2_revisoin.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
