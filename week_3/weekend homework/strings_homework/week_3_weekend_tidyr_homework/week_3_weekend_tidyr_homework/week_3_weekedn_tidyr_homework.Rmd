@@ -1,0 +1,135 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+4 Question 1
+Load in the women_in_gov csv file. Make sure you remove all metadata from the top.
+
+```{r}
+
+library(tidyverse)
+library(readr)
+women_in_gov <- read_csv("data/women_in_gov.csv", skip = 4)
+
+View(women_in_gov)
+```
+
+```{r}
+nrow(women_in_gov)
+
+ncol(women_in_gov)
+
+dim(women_in_gov)
+
+names(women_in_gov)
+
+head (women_in_gov)
+
+tail(women_in_gov)
+```
+
+```{r}
+# Checking if your data has an outlier
+
+hist(women_in_gov$`2018`)
+
+boxplot(women_in_gov$`2018`)
+```
+
+5 Question 2
+Some of the column names contain spaces and numbers. Fix the column names.
+
+```{r}
+library(janitor)
+
+names(women_in_gov) <- c("country_name", "country_code", "indicator_name", "indicator_code","1960":"2018","X64") 
+
+View(women_in_gov)
+
+```
+
+6 Question 3
+We have some columns in the data that don’t really need to be there. Confirm that the X64, Indicator.Name and Indicator.Code have the same values for all observations. If they do, remove those columns.
+
+```{r}
+
+unique(women_in_gov$indicator_name)
+
+unique(women_in_gov$indicator_code)
+
+unique(women_in_gov$X64)
+
+women_in_gov_clean <- women_in_gov %>%
+  select(-indicator_name, - indicator_code, - X64)
+
+women_in_gov_clean
+
+
+```
+
+7 Question 4
+Think back to last week where we talked about wide vs long format. As the data is in wide format, it’s pretty clear to see we have a lot of missing values. Reshape the data from wide to long format, so that for each country the year column becomes a row. Name the column you put your values into (i.e. the ‘values_into’ argument) prop_women.
+
+
+```{r}
+ 
+women_in_gov_wideformat <- women_in_gov_clean %>%
+  pivot_longer(cols = c("1960": "2018"), 
+               names_to = "year", 
+               values_to = "prop_women") 
+
+View(women_in_gov_wideformat)
+```
+
+8 Question 5
+You’ll notice your prop_women column contains missing values. Let’s do a few things. First, let’s count how many missing values you have. Then check how many different missing values you have (e.g. how many unique ones do you have). Then decide how you will deal with them. Will you insert average imputation values, most common imputation values, or use the multiple imputation method? Explain your decision. Then fix the missing values.
+
+```{r}
+# select the women_in_gov_wideformat column to look at what different missing values we have
+women_in_gov_wideformat %>% 
+  filter(is.na(prop_women))
+
+# counting missing values
+women_in_gov_wideformat %>%
+  summarise(count = sum(is.na(prop_women)))
+
+# Removing the NA's - doing so as data was not captured during those years,and filling it with average will not make any sense.
+women_in_gov_without_na <- women_in_gov_wideformat %>% 
+                            drop_na()
+
+women_in_gov_without_na
+```
+
+9 Question 6
+Create a boxplot to see if there are any outliers in the proportion of women.
+
+
+```{r}
+boxplot(women_in_gov_without_na$prop_women)
+```
+
+
+10 Question 7
+Use the outliers package to calculate a zscore for each observation in your data. Mark any of the values in the prop_women column that are more or less than 3 standard deviations above or below the mean as outliers. Add this outlier flag as a new column within the dataset. Create a table that only contains the outliers and have a look at them.
+```{r}
+library(outliers)
+
+# get the z-scores for prop_women
+
+
+women_in_gov_zscores <- scores(women_in_gov_without_na$prop_women)
+
+women_in_gov_zscores
+
+# create a logical vector the same length as outlier_scores
+# that is "TRUE" if outlier_scores is greater than 3 or
+# less than negative 3
+is_outlier <- women_in_gov_zscores > 3 | women_in_gov_zscores < -3
+
+
+
+
+```
+

@@ -1,0 +1,122 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(readr)
+library(stringr)
+library(tidyverse)
+
+code_clan_tweets <- read_csv("data/code_clan_tweets.csv")
+
+nrow(code_clan_tweets)
+
+ncol(code_clan_tweets)
+
+dim(code_clan_tweets)
+
+names(code_clan_tweets)
+
+head (code_clan_tweets)
+
+tail(code_clan_tweets)
+```
+
+```{r}
+hist(code_clan_tweets$favorite_count)
+
+boxplot(code_clan_tweets$favorite_count)
+
+summary(code_clan_tweets$favorite_count)
+```
+
+
+
+3.Find the total number of favourited tweets (stored in favorite_count) that CodeClan tweets have got. Don’t add a tweet’s favorite_count to the total when the tweet was quoted (see the is_quote variable).
+
+```{r}
+favourite_count_including_quote <- select(code_clan_tweets, is_quote, favorite_count)
+
+count(favourite_count_including_quote)
+```
+
+```{r}
+
+total_favourite_tweet_excluding_quotes <- filter(favourite_count_including_quote, is_quote == "FALSE")  
+                                           count(favourite_count_excluding_quotes) %>%
+
+```
+
+```{r}
+total_favourite_tweet_excluding_quotes
+```
+
+Summarise the mean number of retweets (retweet_count), split by the type of platform that was used to tweet (source). Again, omit quoted tweets from the mean.
+
+
+```{r}
+data_omoying_quoted_tweets <- filter(code_clan_tweets, is_quote =="False")
+                               
+mean(code_clan_tweets$retweet_count)
+                              
+group_by(data_omoying_quoted_tweets)
+
+data_omoying_quoted_tweets
+
+
+
+```
+
+
+Count the total number of likes (i.e. total of favorite_count), split by media type, and arrange them from most likes to least. Assume that any tweets without a listed media type are of type “text”.
+```{r}
+
+
+
+```
+
+
+6.Find the mean number of characters that a CodeClan tweet contains
+```{r}
+mean(code_clan_tweets$display_text_width)
+```
+
+7.The code_clan_info.csv data file contains status_url along with other info. Load this in, and join it to the code_clan_tweets tibble, so that you have a status_url for each tweet. Decide which variable to join the tibbles on.
+
+```{r}
+code_clan_info <- read_csv("data/code_clan_info.csv")
+```
+
+```{r}
+code_clan_info
+
+nrow(code_clan_info)
+
+ncol(code_clan_info)
+
+dim(code_clan_info)
+
+names(code_clan_info)
+
+head (code_clan_info)
+```
+
+```{r}
+code_clan_tweets_info <- full_join(code_clan_tweets, code_clan_info, by ="tweet_id")
+
+code_clan_tweets_info
+```
+
+
+8.From your new joined data, create a new tibble codeclan_hashtags containing only the tweet_id and hashtags in lowercase for analysis. Keep only those tweets with hashtags
+```{r}
+
+# step one by using the mutate function,change all the text to lower case,
+# step two select only the tweets which have the "# "spevial character in them
+
+
+codeclan_hashtags <- select(code_clan_tweets_info$tweet_id,"text == # ")
+
+
+```
+

@@ -1,0 +1,111 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+
+library(tidyverse)
+
+face_descriptions <- read_csv("data/face_descriptions.csv")
+
+
+View(face_descriptions)
+
+nrow(face_descriptions)
+
+ncol(face_descriptions)
+
+dim(face_descriptions)
+
+names(face_descriptions)
+
+head(face_descriptions,10)
+
+```
+
+====================================================================================================================
+
+Q.2 > Do these variable names look tidy to you? What format is your data in (long or wide)?
+
+
+Ans.2 > Data is in the wide format...
+
+Data does not look tidy, reasons being
+> Column names do not make any sense, does not describe what we are trying to capture.
+> Each Sell is not uniqie 
+    Some are one work, 
+    Some have two words seperated with special characters like "/" or "."
+    Some are snake cased
+    Some have all small case
+    Some have special characters like a " ? "
+    Some have NA's
+    Some have words loke "empty"
+    
+====================================================================================================================    
+    
+    
+Q.3 > Being faced with such complex data can be daunting, we may feel overwhelmed and ask ourselves:
+
+How can I organise this data?
+How can I make this data meaningful?
+How can I make this data tidy?
+The first problem you can always tackle is to get your data in an appropriate format. What format do you need?
+
+Once you have figured that out, reshape the data into the appropriate format.
+
+Hint
+Use the pivot_longer() function to gather the data into long format. You’ll need to put all columns beginning with t into one column.
+
+```{r}
+library(CodeClanData)
+
+hospital_visits
+
+hospital_visits_long <- hospital_visits %>%
+  pivot_longer(cols = starts_with("FY"), 
+               names_to = "year", 
+               values_to = "visit_numbers")
+
+hospital_visits_long
+```
+
+
+
+```{r}
+
+face_descriptions_long <- face_descriptions %>%
+  pivot_longer(cols = starts_with("t"), 
+               names_to = "t_no", 
+               values_to = "face_description")
+
+face_descriptions_long
+
+```
+
+Question 4
+But wait! Some people have given lengthy descriptions of the faces, some have only given one word. This can be problematic for analysis, if you eventually want to summarise key descriptions.
+
+Some people have split the description of the faces using a slash. Use the separate function to split apart the descriptions column so that if people have given more than one answer (i.e. if the data is separated by a /) it is moved into a new row.
+
+First, you’ll need to decide a cut off for how many responses you want to accept from people. Is one enough? Two? Three? Once you’ve decided how many descriptions you want to code, you’ll have to separate your description columns into that many columns.
+
+```{r}
+
+separated_descriptions <- face_descriptions_long %>%
+  
+  separate(face_description, c("description_1","description_2","description_3"), sep = "/") 
+
+
+
+```
+
+```{r}
+separated_descriptions
+```
+
+```{r}
+
+```
+
