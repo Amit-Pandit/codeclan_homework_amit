@@ -1,0 +1,45 @@
+---
+title: "First R Markdown"
+author: "Amit P"
+date: "23/03/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# This is my first big heading
+
+Here is some text for my first document.
+
+Here is some text for my first **Rmarkdown** document.
+
+
+```{r}
+summary(cars)
+```
+
+1.Number one  
+2.Number two
+  * nested item
+  * nested item
+3. Number three
+
+[Link to Rmarkdown
+document(https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)]  
+
+
+images
+
+
+
+Making a table :
+
+```{r, warning =FALSE, message = FALSE}
+library(tidyverse)
+```
+
+2 plus 2 = ` r 2+2`
+
+## This is a smaller one
