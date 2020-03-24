@@ -40,9 +40,9 @@ bird_data_codes
 
 Cleaning the data
 
-Step 1: cleaning the column names and giving them a more meaningfull name.
+Step 1: cleaning the column names and giving them a more meaningfull name for ship_data
 ```{r}
-View(ship_data_by_record_id)
+View(bird_data_by_recrd_id)
 
 names(ship_data_by_record_id)
 
@@ -65,7 +65,51 @@ ship_data_by_record_id
 
 ```
 
+
+Step 2: cleaning the column names and giving them a more meaningfull name for bird_data by looking at the bird data codes excel sheet...
+
+```{r}
+
+View(bird_data_by_recrd_id)
+
+names(bird_data_by_recrd_id)
+
+dim(bird_data_by_recrd_id)
+
+head(bird_data_by_recrd_id)
+
+tail(bird_data_by_recrd_id)
+
+clean_names(bird_data_by_recrd_id)
+
+```
+
+```{r}
+library(janitor)
+
+names(bird_data_by_recrd_id) <- c("record", "record_id","species_common_name", "species_scientific_name", "species_abbreviation", "age", "wandering_albertos_plumage_phase", "plumage_phase", "sex", "count", "feeding_num", "feeding_ocurance", "sitting_on_water_num", "sitting_on_water_ocur", " sitting on ice no", "stiiting on ice ocr", "sitting on ship ocur", "in hand ocur", "flying past num", "flying past ocr", "accompanying num", "accompanying occurances", "ship follow in wake num", "ship follow in wake occurances", "occurance of moult", "naturally feeding occurance")
+
+bird_data_by_recrd_id
+
+bird_data_by_record_id <- clean_names(bird_data_by_recrd_id)
+
+View(bird_data_by_record_id)
+
+```
+
+
+
 Step 2:
 
 Dropping / Deleating columns which are not required , checking for repetations in data, missing data, and terating them as required.
+
+```{r}
+
+ship_data_by_record_id
+
+ship_data_by_record_id <- select(ship_data_by_record_id,record_id,date,latitude,longitude,
+
+bird_data_by_record_id <- select (bird_data_by_record_id, - record)
+```
+
 
