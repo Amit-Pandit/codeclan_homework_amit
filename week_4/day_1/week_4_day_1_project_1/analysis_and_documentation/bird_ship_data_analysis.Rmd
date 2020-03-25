@@ -1,0 +1,36 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(readr)
+library(here)
+
+bird_ship_data <- read_csv("bird_ship_data_record_id.csv")
+
+bird_ship_data
+
+dim(bird_ship_data)
+
+names(bird_ship_data)
+
+View(bird_ship_data)
+```
+
+Which bird had the most individual sightings?
+
+```{r}
+bird_most_sightings <- bird_ship_data %>%
+  
+  group_by(bird_common_name,bird_scientific_name,bird_abbreviation) %>%
+  
+  arrange(desc(count))
+
+  
+bird_most_sightings
+
+
+ 
+```
+

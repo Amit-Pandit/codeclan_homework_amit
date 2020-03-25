@@ -20,6 +20,10 @@ library(readxl)
 
 library(openxlsx)
 
+install.packages("here")
+
+library(here)
+
 ship_data_by_record_id <- read_excel("data/seabirds.xls")
 
 ship_data_by_record_id
@@ -87,13 +91,13 @@ clean_names(bird_data_by_recrd_id)
 ```{r}
 library(janitor)
 
-names(bird_data_by_recrd_id) <- c("record", "record_id","species_common_name", "species_scientific_name", "species_abbreviation", "age", "wandering_albertos_plumage_phase", "plumage_phase", "sex", "count", "feeding_num", "feeding_ocurance", "sitting_on_water_num", "sitting_on_water_ocur", " sitting on ice no", "stiiting on ice ocr", "sitting on ship ocur", "in hand ocur", "flying past num", "flying past ocr", "accompanying num", "accompanying occurances", "ship follow in wake num", "ship follow in wake occurances", "occurance of moult", "naturally feeding occurance")
+names(bird_data_by_recrd_id) <- c("record", "record_id","bird_common_name", "bird_scientific_name", "bird_abbreviation", "age", "wandering_albertos_plumage_phase", "plumage_phase", "sex", "count", "feeding_num", "feeding_ocurance", "sitting_on_water_num", "sitting_on_water_ocur", " sitting on ice no", "stiiting on ice ocr", "sitting on ship ocur", "in hand ocur", "flying past num", "flying past ocr", "accompanying num", "accompanying occurances", "ship follow in wake num", "ship follow in wake occurances", "occurance of moult", "naturally feeding occurance")
 
 bird_data_by_recrd_id
 
 bird_data_by_record_id <- clean_names(bird_data_by_recrd_id)
 
-View(bird_data_by_record_id)
+bird_data_by_record_id
 
 ```
 
@@ -105,11 +109,52 @@ Dropping / Deleating columns which are not required , checking for repetations i
 
 ```{r}
 
-ship_data_by_record_id
+bird_data_by_record_id_cleaned <- bird_data_by_record_id %>%
+  select(record_id, bird_common_name,bird_scientific_name,bird_abbreviation, count)
 
-ship_data_by_record_id <- select(ship_data_by_record_id,record_id,date,latitude,longitude,
+bird_data_by_record_id_cleaned
 
-bird_data_by_record_id <- select (bird_data_by_record_id, - record)
+ship_data_by_record_id_cleaned <- ship_data_by_record_id %>%
+  select(record_id, latitude, longitude, bird_count, month,sount_hemisphere_season )
+
+ship_data_by_record_id_cleaned
+
 ```
 
+Checking String Variables
+
+Setting string to lower case across all
+
+```{r}
+
+bird_data_by_record_id_lower <- mutate_all(bird_data_by_record_id_cleaned, .funs=tolower)
+
+bird_data_by_record_id_lower
+
+ship_data_by_record_id_lower <- mutate_all(ship_data_by_record_id_cleaned, .funs = tolower)
+
+ship_data_by_record_id_lower
+
+```
+
+
+Merging of the two tables 
+
+```{r}
+#scored_policies<-merge(x=policies,y=limits,by="State",all.x=TRUE) - source internet http://www.programmingr.com/tutorial/left-join-in-r/
+
+bird_ship_data_record_id <- merge(x=bird_data_by_record_id_lower, y=ship_data_by_record_id_lower,by="record_id",all.x = TRUE)
+  
+bird_ship_data_record_id
+```
+
+
+Saving the table as a .csv file to the clean_data folder
+
+```{r}
+# Source https://datatofish.com/export-dataframe-to-csv-in-r/
+# write.csv(Your DataFrame,"Path where you'd like to export the DataFrame\\File Name.csv", row.names = FALSE)
+
+write_csv(bird_ship_data_record_id,"bird_ship_data_record_id.csv")
+```
 
