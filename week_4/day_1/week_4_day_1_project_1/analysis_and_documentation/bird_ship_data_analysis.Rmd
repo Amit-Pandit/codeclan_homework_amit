@@ -16,6 +16,7 @@ dim(bird_ship_data)
 names(bird_ship_data)
 
 View(bird_ship_data)
+
 ```
 
 Which bird had the most individual sightings?
@@ -25,12 +26,106 @@ bird_most_sightings <- bird_ship_data %>%
   
   group_by(bird_common_name,bird_scientific_name,bird_abbreviation) %>%
   
+  summarise(count = n()) %>%
+  
   arrange(desc(count))
 
-  
 bird_most_sightings
 
-
  
+```
+ 
+ 
+ 
+ 
+ 2.Which bird had the highest total count?
+
+```{r}
+# Step 1 : first select the birds which have the same common name, scientific name and abbrevation and count. ( and then)
+# Step 2 : Group your data as per record_id,bird_common_name, bird_scientific_name, bird_abbreviation.
+# Step 2 : Once this is done and you have your group add the respective counts and assing it to a new variable sum_of_bird_count
+# Step 3 : Arrange in descending order , the bird with the highest count will appear first
+
+#deaths <- select(all_deaths, name, allegiances, gender, nobility, year_of_death) 
+
+bird_highest_count <- select(bird_ship_data,bird_common_name, bird_scientific_name, bird_abbreviation, count) %>%
+           
+                        group_by(bird_common_name, bird_scientific_name, bird_abbreviation) %>% 
+  
+                        summarise(count = sum(count)) %>%
+ 
+                        #mutate(count, sum_of_bird_count = sum(count)) %>%
+  
+                        arrange(desc(count))
+
+
+bird_highest_count                      
+                        
+  
+                         
+
+```
+
+
+3.Which bird had the highest total count above a latitude of -30?
+
+```{r}
+# Step 1 : Select only the counts where in Latitude > -30
+# Step 2 : and then select the birds which have the same common name, scientific name and abbrevation,
+# Step 2 : Once this is done and you have your group add the respective counts and assing it to a new variable count_sum
+# Step 3 : Arrange in descending order , the bird with the highest count will appear first
+
+bird_count_latitude <- select(bird_ship_data, bird_common_name, bird_scientific_name, bird_abbreviation, count,latitude) %>%
+                          
+                          group_by(bird_common_name, bird_scientific_name, bird_abbreviation)%>%
+
+                          filter(latitude > -30) %>%
+
+                          summarise(count = sum(count)) %>%
+
+                          arrange(desc(count))
+
+bird_count_latitude
+
+```
+
+
+
+4.How many different types of birds were only ever seen in groups of 1?
+
+```{r}
+
+# Step 1:  select common name, scientific name, abbrevation , count
+# Step 2 : group by first 3 line items
+# Step 2 : check if common name, scientific name and abbrevation are repeated, if they are repeated drop them
+# Step 3 : this will give us the list of birds which were only ever seen in groups of one.
+# Step 4 : count their total
+
+bird_count_1 <- select(bird_ship_data, bird_common_name, bird_scientific_name, bird_abbreviation, count) %>%
+                          
+                          group_by(bird_common_name, bird_scientific_name, bird_abbreviation)%>%
+
+                          filter(count == 1) %>%
+
+                         
+
+                          
+
+bird_count_1
+
+```
+
+5.How many penguins were seen? (Hint: there are many types of penguin)
+
+```{r}
+
+#Step 1 : Find the unique types of penguins in the data set, check for spellings as per hint,
+#Step 2 : Select them all and give a sum of their count
+#Step 3 : Sum of Count then multiplied with the conversion factor will give us the total number of penguins which were seen
+
+bird_count_penguins <- select(bird_ship_data, bird_common_name, bird_scientific_name, bird_abbreviation, count) %>%
+  
+  select(contains("bo"))
+
 ```
 
