@@ -1,0 +1,83 @@
+---
+title: "bird_data_analysis"
+author: "Amit Pandit"
+date: "27/03/2020"
+output: html_document
+---
+
+### Loading Library
+
+library(tidyverse)   
+library(readr)  
+library(here)  
+
+### Reading the data
+
+**bird_ship_data <- read_csv(here("clean_data/bird_ship_data_cleaned.csv"))**
+
+Checking Dimentions / Column Names /Viewing the data
+
+**dim(bird_ship_data)**  
+**names(bird_ship_data)**  
+**View(bird_ship_data)**  
+
+### Question 1
+
+Which bird had the most individual sightings?
+
+**bird_most_sightings <- bird_ship_data %>%**  
+  **group_by(bird_common_name,bird_scientific_name,bird_abbreviation) %>%**  
+  **summarise(count = n()) %>%**  
+  **arrange(desc(count))**
+  
+  
+  
+### Question 2  
+
+Which bird had the highest total count? 
+
+**bird_highest_count <-**   
+  **select(bird_ship_data,bird_common_name, bird_scientific_name, bird_abbreviation, count) %>%**  
+        **group_by(bird_common_name, bird_scientific_name, bird_abbreviation) %>%**  
+        **summarise(count = sum(count)) %>%**    
+          #mutate(count, sum_of_bird_count = sum(count)) %>%  
+        **arrange(desc(count))**
+        
+    
+        
+### Question 3
+
+Which bird had the highest total count above a latitude of -30?
+
+**bird_count_latitude <-**  
+  **select(bird_ship_data, bird_common_name, bird_scientific_name, bird_abbreviation, count,latitude) %>%**  
+   **group_by(bird_common_name, bird_scientific_name, bird_abbreviation)%>%**  
+   **filter(latitude > -30) %>%**  
+   **summarise(count = sum(count)) %>%**  
+   **arrange(desc(count))**
+   
+   
+
+### Question 4
+
+How many different types of birds were only ever seen in groups of 1?  
+
+**bird_count_1 <- **  
+  **select(bird_ship_data, bird_common_name, bird_scientific_name, bird_abbreviation, count) %>%**  
+      **group_by(bird_common_name, bird_scientific_name, bird_abbreviation)%>%**  
+      **summarise(count = max(1))%>%**  
+      **filter(count == 1)%>%**  
+      **nrow()**  
+
+### Question 5.  
+
+How many penguins were seen? (Hint: there are many types of penguin)
+
+
+*Step 1 : select common name*  
+*Step 2 : from common name filter only names which contains the word penguin Eg : contains("bo") for book*  
+*Step 3 : share the count*  
+
+**bird_count_penguins <- select(bird_common_name, count) %>%**  
+  
+  **select(contains("bo"))**
