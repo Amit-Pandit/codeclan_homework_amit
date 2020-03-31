@@ -52,8 +52,12 @@ salaries%>%
 
 9> Drop all the non-numeric variables in the tibble.
 ```{r}
-library(here)
-read_csv(here("raw_data/salaries.csv", na="."))
+#library(here)
+#read_csv(here("raw_data/salaries.csv", na="."))
+
+
+sapply(salaries, is.numeric)
+select(salaries, -c(gender, employment_category, is_white))
 ```
 
 10> Find all employees with either less than 2 years work experience or an education level below 12.
@@ -144,6 +148,7 @@ In this exercise we will be looking at the beer calorie data (dataset beer). We 
 ```{r}
 dim(beer)
 names(beer)
+View(beer)
 
 # Parsing of data
 
@@ -152,18 +157,79 @@ names(beer)
 1> Find all the observations where the carbohydrates are missing.
 
 ```{r}
-# Checking for what different missing values we have
-beer
-#  filter(is.na(carbohydrates))
+beer %>%
+  filter(is.na(carbohydrates) |
+         carbohydrates == "*")
 ```
 
-# Counting number of NA's
 
+2> Find all the observations where the brand is missing.
 ```{r}
 beer %>%
-  summarise(count = sum(is.na(carbohydrates)))
+  filter(is.na(brand))
+         
+```
+
+3> What is different about the observations missing carbohydrates and the observations missing brand? To clean the data should be drop the rows missing brand or the rows missing carbohydrates?
+```{r}
+# there are only 5 cases where in brand is missing, however all simultanious variables are also mission,and more iportantly in the real world if you have no idea whome are you analysing the data for, it would not make sence, however in this data set dropping the 5 rows where in brand is missing makes a lot of sense.
 ```
 
 
-Find all the observations where the brand is missing.
-What is different about the observations missing carbohydrates and the observations missing brand? To clean the data should be drop the rows missing brand or the rows missing carbohydrates?
+4 Recoding excercise
+
+Use the dataset inmates.
+
+# Checking the data set
+```{r}
+inmates
+dim(inmates)
+names(inmates)
+View(inmates)
+```
+
+#1> Change the ‘M’/‘F’ values in gender to be ‘Male’/‘Female’.
+```{r}
+
+inmates_m_f <- inmates %>%
+  mutate(gender = recode(gender, 'M' = 'MALE', 'F' = 'FEMALE'))
+
+inmates_m_f
+```
+
+#2> For the race variable, everything is in capital letters, change each level to title case. Also combine ‘AMER IND’ and ‘ASIAN’ into an ‘Other’ category.
+```{r}
+
+inmates_race <- inmates_m_f %>%
+                    mutate(race = str_to_title(race),
+                           race = ifelse(race %in% c("Amer Ind", "Asian"), "Other", race))
+
+#distinct(inmates, race)
+
+inmates_race
+
+```
+
+#3> Make a new variable bond_level which is High whenever the bond for an inmate is above $1,000,000 and Normal otherwise.
+How many inmates have a high bond level?
+```{r}
+inmates_bond_level <- inmates_race %>%
+                         mutate(bond_levels = ifelse( bond_amount > 1000000, "High","Normal"))
+
+inmates_bond_level
+```
+
+
+#4> Modify the detainer variable so that NONE, IMIGRATION and FEDERAL are in title case and all other levels are set to Other.
+```{r}
+
+# distinct(inmates_bond_level,detainer)
+
+inmates_final <- inmates_bond_level %>%
+  mutate(detainer = str_to_title(detainer),
+                        detainer = ifelse(detainer %in% c("Other State", "Special Parole", "State Of Ct", "Do Not Release"),                                                                 "Other", detainer))
+inmates_final
+
+# distinct(inmates_final,detainer)
+```
+
