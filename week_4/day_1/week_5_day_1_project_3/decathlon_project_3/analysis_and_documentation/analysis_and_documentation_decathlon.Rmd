@@ -8,6 +8,7 @@ Setting up Required Libraries and reading the CSV files.
 library(tidyverse)
 library(readr)
 library(here)
+here::here()
 decathlon <- read_csv(here("clean_data/decathlon_clean.csv"))
 View(decathlon)
 names(decathlon)
