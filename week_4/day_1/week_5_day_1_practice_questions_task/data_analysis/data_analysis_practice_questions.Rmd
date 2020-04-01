@@ -2,6 +2,33 @@
 title: "R Notebook"
 output: html_notebook
 ---
+
+Loading Library
+
+```{r}
+library(tidyverse)
+library(readr)
+library(stringr)
+library(here)
+```
+
+# reading the files and saving them with a variable name
+
+```{r}
+beer <- read_delim(here("raw_data/beer.txt", delim = ";"))
+dim(beer)
+View(beer)
+
+inmates <- read_tsv(here("raw_data/inmates.tsv"))
+dim(inmates)
+View(inmates)
+
+salaries <- read_csv(here("raw_data/salaries.csv"))
+dim(salaries)
+View(salaries)
+names(salaries)
+```
+
 1 Using the dplyr verbs
 Use the salaries dataset to answer the following questions.
 
@@ -25,7 +52,6 @@ salaries%>%
 ```{r}
   salaries %>%
   mutate(beginning_slaray_pence = beginning_salary*100 , current_salary_pence = current_salary*100) 
-  
 ```
 
 5> Use summarise to find the maximum age and the minimum age.
