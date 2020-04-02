@@ -11,48 +11,24 @@ candy_2015 <- read_excel(here("raw_data/boing-boing-candy-2015.xlsx"))
 candy_2016 <- read_excel(here("raw_data/boing-boing-candy-2016.xlsx"))
 candy_2017 <- read_excel(here("raw_data/boing-boing-candy-2017.xlsx"))
 
-#chacking the structure of the data
-candy_2015
-dim(candy_2015)
-names(candy_2015)
-View(candy_2015)
-
-dim(candy_2016)
-names(candy_2016)
-View(candy_2016)
-
-dim(candy_2017)
-names(candy_2017)
-View(candy_2017)
-
-
 # Primary-Cleaning candy_2015
-
 # Cleaning names of Variables
 candy_2015_clean_names <- clean_names(candy_2015)
 
-# Adding Person_ID
+# Adding Variable Year
 candy_2015_year <- candy_2015_clean_names %>%
   mutate(year = 2015)
 
-view(candy_2015_year)
-
 # Pivoting data and creating two new columns candy and emotion and storing in the data set pivoted
 candy_2015_pivoted <- candy_2015_year %>%
-  pivot_longer(butterfinger:york_peppermint_patties, names_to = "candy_name", values_to = "emotion")
-
-View(candy_2015_pivoted)
+  pivot_longer(butterfinger:york_peppermint_patties, names_to = "candy_name", values_to = "rating")
 
 # dropping variables which are not required and selecting only 5 variables required for analysis
 candy_2015_dropped <- candy_2015_pivoted %>%
-   select(year, how_old_are_you, are_you_going_actually_going_trick_or_treating_yourself, candy_name, emotion)
-
-View(candy_2015_dropped)
+   select(year, how_old_are_you, are_you_going_actually_going_trick_or_treating_yourself, candy_name, rating)
 
 # re-naming the Variables with appropriate names
-names(candy_2015_dropped) <- c("year", "age", "trick_or_treat_yourself", "candy_name", "emotion")
-
-View(candy_2015_dropped)
+names(candy_2015_dropped) <- c("year", "age", "trick_or_treat_yourself", "candy_name", "rating")
 
 # sorting out the age variable
 candy_2015_clean <- candy_2015_dropped %>%
@@ -78,117 +54,230 @@ candy_2016_year <- candy_2016_clean_names %>%
 
 # Pivoting data and creating two new columns candy and emotion and storing in the data set pivoted
 candy_2016_pivoted <- candy_2016_year %>%
-  pivot_longer( x100_grand_bar :york_peppermint_patties, names_to = "candy_name", values_to = "emotion")
-
-# Reference : distinct(candy_2016_pivoted , york_peppermint_patties_ignore)
+  pivot_longer( x100_grand_bar :york_peppermint_patties, names_to = "candy_name", values_to = "rating")
 
 # dropping variables which are not required and selecting only variables required for analysis
-candy_2016_clean <- candy_2016_pivoted %>%
-  select(year, how_old_are_you, are_you_going_actually_going_trick_or_treating_yourself, candy_name, emotion,your_gender, which_country_do_you_live_in)
+candy_2016_dropped <- candy_2016_pivoted %>%
+  select(year, how_old_are_you, are_you_going_actually_going_trick_or_treating_yourself, candy_name,
+         rating,your_gender, which_country_do_you_live_in)
 
-# changing string name from DESPARE to 
 # re-naming the Variables with appropriate names
-names(candy_2016_clean) <- c("year", "age", "trick_or_treat_yourself", "candy_name", "emotion", "gender", "country")
+names(candy_2016_dropped) <- c("year", "age", "trick_or_treat_yourself", "candy_name", "rating", "gender", "country")
+
+View(candy_2016_dropped)
+
+
+
+# sorting out the age variable
+candy_2016_clean <- candy_2016_dropped %>%
+  mutate(age = as.integer(age),
+         age = ifelse(age < 1 | age >= 100, NA_real_, age))
+
 View(candy_2016_clean)
 
 # Primary-Cleaning candy_2017
-# Step 1 : checing dimentions / variable names
-dim(candy_2017)
-names(candy_2017)
-View(candy_2017)
-
 # Cleaning Variable names
 candy_2017_clean_names <- clean_names(candy_2017)
 
 # Adding year
 candy_2017_year <- candy_2017_clean_names %>%
   mutate(year = 2017)
-View(candy_2017_year)
 
 # Removing the Question tag added before all the variable names
-
 names(candy_2017_year) <- str_remove(names(candy_2017_year), "q[0-9]+_")
 
-View(candy_2017_year)
-
+#Re-Naming Vatiable names with relevant names
 names(candy_2017_year) <- str_replace(names(candy_2017_year), "100_grand_bar", "x100_grand_bar")
-
-View(candy_2017_year)
-
 names(candy_2017_year) <- str_replace(names(candy_2017_year), "going_out", "trick_or_treat_yourself")
-
-View(candy_2017_year)
 
 # Pivoting data and creating two new columns candy and emotion and storing in the data set pivoted
 candy_2017_pivoted <- candy_2017_year %>%
-  pivot_longer( x100_grand_bar :york_peppermint_patties, names_to = "candy_name", values_to = "emotion")
-
-View(candy_2017_pivoted)
-
-#distinct(candy_2017_pivoted, x114)
+  pivot_longer( x100_grand_bar :york_peppermint_patties, names_to = "candy_name", values_to = "rating")
 
 # dropping variables which are not required and selecting only variables required for analysis
-candy_2017_clean <- candy_2017_pivoted %>%
-  select(year, trick_or_treat_yourself, gender, age, country, candy_name, emotion)
+candy_2017_dropped <- candy_2017_pivoted %>%
+  select(year, trick_or_treat_yourself, gender, age, country, candy_name, rating)
+
+# sorting out the age variable
+candy_2017_clean <- candy_2017_dropped %>%
+  mutate(age = as.integer(age),
+         age = ifelse(age < 1 | age >= 100, NA_real_, age))
 
 View(candy_2017_clean)
 
-distinct(candy_2017_clean , age)
 
-
-# Now lets look in detail at the Business Requirements i.e the analysis questions and start deep cleaning
-# the data as per the questions asked
-
-#Analysis questions
-
-# 1> What is the total number of candy ratings given across the three years. 
-#     (number of candy ratings, not number of raters. Don’t count missing values)
-
-# distinct(candy_2015_clean, candy_name)
-
-#Ans : On the face of it we have 93 different types of candy in 2015, 100 in 2016 and 103 in 2017, so approx
-#the answer to this question should be somewhere between 100 to 110 keeping in mind most of the cancy have been repeated.
-
-# 2> What was the average age of people who are going out trick or treating and the average age of people 
-#3. not going trick or treating?
-#Answer :
-#  First we need to see to that the the variable names match , which is done, then we need to check all the unique 
-# items in the variable names.
-# So now we know,2015 has yes / no , same with 2016 and 2017 has yes/no/NA, hence data is good to go
-  distinct(candy_2017_clean,trick_or_treat_yourself)
-
-# 3> For each of joy, despair and meh, which candy bar revived the most of these ratings?
-# Answer : In 2017 emotion has only NA / MEH / DISPAIR / JOY same with 2016, in 2015 there are only 3 JOY/ NA/DISPARE,which 
-# is fine, so data is good to go.
-
-  distinct(candy_2017_clean,emotion)
-  
-  
-# 4> How many people rated Starburst as despair?
-# data is clean enugh to answer this
-  distinct( candy_2015_clean, candy_name)
-
-#For the next three questions, count despair as -1, joy as +1 and meh as 0.
-
-# 5> What was the most popular candy bar by this rating system for each gender in the dataset?
-  distinct( candy_2015_clean, gender)
-  
-# 6> What was the most popular candy bar in each year?
-#probably to answer this question wil have to add 3 more columns for candy_name_2015 / candy_name_2016 / candy_name_2017
-  
-# 7> What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
-# to answer this question, all country names will have to be cleaned first
 
 #BINDING THE 3 DATA-SETS
   
 candy_all_years_primary_clean <- bind_rows(candy_2015_clean, candy_2016_clean, candy_2017_clean)
 
-candy_all_years_primary_clean <- candy_all_years_primary_clean %>%
-                                    mutate(age = as.numeric(age))
-
 View(candy_all_years_primary_clean)
 
-# Writing .csv file into clean data for further analysis
+# Deep Cleaning
+# Focus on cleaning country names United States
+candy_all_years_clean <- candy_all_years_primary_clean %>%
+  mutate(country = if_else(str_detect(country, "USSA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "america"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "America"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USAUSAUSA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "usas"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United States of America "), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "'merica "), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Ahem....Amerca"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Alaska"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "California"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "I pretend to be from Canada, but I am really from the United States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Murica"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "murrika"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "N. America,"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "New York"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "North Carolina"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Sub-Canadian North America... 'Merica"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "the best one - usa"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "The United States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "he United States of America,"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "The Yoo Ess of Aaayyyyyy"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "U S"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "u s a"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "u.s."), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "U.S."), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "u.s.a."), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "U.S.A."), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "unhinged states"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Unied States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "unite states"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United  States of America"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Sates"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United staes"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United State"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Statea"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Stated"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "united states"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "united States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United states"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "UNited States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Stetes"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United States of America"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Statss"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "united ststes"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "United ststes"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Unites States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Units States"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "us"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Us"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "US of A"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "usa"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "Usa"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USa"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA (I think but it's an election year so who can really tell)"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA USA USA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA USA USA USA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA USA USA!!!!"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA!"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA! USA!"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA! USA! USA!"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, " USA!!!!!!"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USA? Hard to tell anymore.."), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USAA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "usas"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USAUSAUSA"), "united states", country)) %>%
+  mutate(country = if_else(str_detect(country, "USSA"), "united states", country))%>%
+# Focus on cleaning country names Canada
+  mutate(country = if_else(str_detect(country, "Can"), "canada", country)) %>%
+  mutate(country = if_else(str_detect(country, "canada"), "canada", country)) %>%
+  mutate(country = if_else(str_detect(country, "Canada"), "canada", country)) %>%
+  mutate(country = if_else(str_detect(country, "CANADA"), "canada", country)) %>%
+  mutate(country = if_else(str_detect(country, "Canada`"), "canada", country)) %>%
+  # Focus on cleaning country names united kingdom
+  mutate(country = if_else(str_detect(country, "U.K."), "united kingdom", country)) %>%
+  mutate(country = if_else(str_detect(country, "uk"), "united kingdom", country)) %>%
+  mutate(country = if_else(str_detect(country, "Uk"), "united kingdom", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Kindom"), "united kingdom", country)) %>%
+  mutate(country = if_else(str_detect(country, "United kingdom"), "united kingdom", country)) %>%
+  mutate(country = if_else(str_detect(country, "United Kingdom"), "united kingdom", country))
 
-write_csv(here(candy_all_years_primary_clean,'clean_data/candy_all_years_primary_clean1.csv'))
+View(candy_all_years_clean)
+
+  # Country Details 
+  # United States of America - 'merica, Ahem....Amerca, Alaska,america, America, California, 
+  # I pretend to be from Canada, but I am really from the United States, Murica, murrika, N. America, New Jersey	
+  # New York, North Carolina, Sub-Canadian North America... 'Merica, the best one - usa, The United States, 
+  # The United States of America, The Yoo Ess of Aaayyyyyy, U S, u s a, u.s., U.s., U.S., u.s.a., U.S.A., unhinged states, 
+  # Unied States, unite states, United  States of America, United Sates, United staes, United State, United Statea, 
+  # United Stated, united states, united States, United states, United States, UNited States, united states of america, 
+  # United States of America, United Statss, United Stetes, united ststes, United ststes, Unites States,Units States,
+  # us, Us, US, US of A,usa, uSA, Usa,USa, USA, USA (I think but it's an election year so who can really tell), USA USA USA,
+  # USA USA USA USA, USA USA USA!!!!, USA!, USA! USA!, USA! USA! USA!, USA!!!!!!, USA? Hard to tell anymore.., USAA,usas,
+  #USAUSAUSA, USSA
+  # Atlantis - Fictional Island so drop
+  # australia ,Australia
+  # Austria
+  # belgium
+  # Brasil
+  # Can, canada, Canada, CANADA, Canada`, 
+  # Canae ( Village in Italy)
+  # cascadia, Cascadia (Not a conutry)
+  # China
+  # Costa Rica
+  # croatia
+  # Denial (Not a conutry
+  # Denmark	
+  # Earth	(Not a conutry)
+  # endland,england,England, 
+  # españa	
+  # EUA	
+  # Europe ( CNot a conutry) 
+  # Fear and Loathing	(Not a conutry)
+  # finland, Finland	
+  # france, France	
+  # germany, Germany
+  # god's country	(Not a country)
+  # Greece	
+  # hong kong	, Hong Kong	
+  # hungary	
+  # I don't know anymore	( Not a conutry)
+  # Iceland	
+  # Indonesia	
+  # insanity lately	( Not a country)
+  # Ireland	
+  # Japan	
+  # kenya	
+  # Korea	
+  # Mexico	
+  # murrika	
+  # Narnia	(Not a Country)
+  # netherlands, Netherlands, The Netherlands
+  # Neverland	
+  # New Zealand	
+  # North Carolina	
+  # Not the USA or Canada	(Not a country)
+  # one of the best ones (Not a country)
+  # Panama	
+  # Philippines	
+  # Pittsburgh	
+  # Portugal	
+  # Scotland	
+  # See above	(Not a country
+  # Singapore
+  # Somewhere	(Not a country)
+  # South africa	
+  # South Korea	
+  # soviet canuckistan
+  # spain
+  # subscribe to dm4uz3 on youtube	(Not a country)
+  # sweden, Sweden	
+  # Switzerland	
+  # Taiwan	103
+  # The Netherlands	
+  # The republic of Cascadia	100
+  # there isn't one for old men	(Not a country)
+  # this one	(Not a country)
+  # Trumpistan	(Not a country)
+  # U.K., uk, Uk, UK, United Kindom, United kingdom, United Kingdom
+  # UAE	
+  # UD ( Not a country)
+  
+# Writing .csv file into clean data for further analysis
+write_csv(candy_all_years_clean,'clean_data/candy_all_years_clean.csv')
 
