@@ -27,26 +27,33 @@ To clean it I did the following :
 2. I devided my task of cleaning the data into two phases.
    Phase 1 : Where in i called it primary cleaning involved    
              1 Reading the files in the relevant forat using the `read_excel` function    
-             2 Adding a variable Year which would be needed further for analysys using the `mumate` function   
-             3 Cleaning the variable names using the `clean_variable` function      
-             4 Pivoting the data at the relevant variables using the `pivot_longer` function.   
-             5 Selecting the relevant variables required for analysis using the `select` function.   
-             6 Re-naming the data with the relavant names using the `names` function.   
-             7 Filtering the age column using the a combination of `mutate`, `as.integer` and `ifelse` statement.   
-             8 Finally the same exercise was repeteaded for the other two data sets from `2016` and `2017`.   
-3. Then came Phase 2, which i felt was a mammoth of a task, mainly involved cleaning of country names, minute details 
-   looking into the age and restricting it between 1 and 99, checking the formats in which data was pharsed,etc...
+             2 Cleaning the variable names using the `clean_variable` function      
+             3 Pivoting the data at the relevant variables using the `pivot_longer` function.   
+             4 Selecting the relevant variables required for analysis using the `select` function.   
+             5 Re-naming the data with the relavant names using the `names` function.   
+             6 Finally the same exercise was repeteaded for the other two data sets from `2016` and `2017`.   
+3. Then came Phase 2, which i felt was a mammoth of a task, mainly involved    
+             1 cleaning country names - united states was quiet a tesk.   
+             2 Selecting age which is only an intinge by using the `as.integer` function and 
+             then restricting age between 1 and 99 using the `mutate` and `ifelse` statement.   
+             3 Checking the formats in which data was parshed.   
+             4 Adding in the Variable Year which plays an important role in analysis using the `mutate` function.   
+             
+And finally after a few days of work - Ta...ta...daaaa.....Data looks a bit organised
+![](https://i.redd.it/qzi6s0oog8q11.jpg)
+          
+             
+Now it was time to analyse the data and answer the questions..
 
-
-Here is my code:
-
+Here is my code:   
+Calling the relevant libraries
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(here)
 library(janitor)
 ```
 
-####### READING THE DATA-SET
+Reading the data set and parsing the variables gender and country as character.
 ```{r}
 candy_data <- read_csv(here("clean_data/candy_all_years_clean.csv"),
                        col_types = cols(
