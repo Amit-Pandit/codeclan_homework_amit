@@ -1,0 +1,184 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(prob)
+library(gtools)
+library(tidyverse)
+
+```
+
+1. If I roll a six-sided dice once, what is the probability of getting a number less than 5?
+```{r}
+s_one_dice <- rolldie(1)
+
+# how large is the sample space? 
+ss_one_dice <- s_one_dice %>%
+  nrow()
+
+# event space for roll of a total of seven
+s_sum_lessthan_five <- s_one_dice %>%
+  filter(X1 < 5) %>%
+  nrow()
+
+probability_lessthan_five <- s_sum_lessthan_five / ss_one_dice
+
+probability_lessthan_five
+```
+
+2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
+
+```{r}
+s_three_dice <- rolldie(3) %>%
+  nrow()
+
+s_three_dice
+```
+
+3. In an experiment where we roll four dice:
+
+1. how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
+2. what is the probability of this event?
+3. what assumptions do we apply in answering part ii? And - Order does not matter.
+
+```{r}
+
+s_four_dice <- rolldie(4)
+
+s_four_dice_five <- s_four_dice %>%
+  mutate(sum = X1 +X2 +X3 +X4) %>%
+  filter(sum == 5) %>%
+  nrow()
+
+s_four_dice_six <- s_four_dice %>%
+  mutate(sum = X1 +X2 +X3 +X4 )%>%
+  filter(sum == 6) %>%
+  nrow()
+
+s_four_dice_seven <- s_four_dice %>%
+  mutate(sum = X1 +X2 +X3 +X4) %>%
+  filter(sum == 7) %>%
+  nrow()
+
+total_equals_5_6_7 = s_four_dice_five + s_four_dice_six + s_four_dice_seven
+
+total_equals_5_6_7
+
+probability_five_six_seven = total_equals_5_6_7 / nrow(s_four_dice)
+
+probability_five_six_seven
+```
+
+4. Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
+
+```{r}
+people_height <- c("A", "B", "C", "D", "E")
+
+random_seating <- as_tibble(permutations(n = 5, 
+                                  r = 5, 
+                                  v = people_height, repeats.allowed = FALSE))
+
+decreasing_heights <- as_tibble(permutations(n = 5, 
+                                  r = 5, 
+                                  v = people_height, repeats.allowed = FALSE)) %>%
+  filter( V1 == "A", V2 == "B", V3 == "C", V4 == "D", V5 == "E")
+
+
+probability_decreasing_heights = nrow(decreasing_heights) / nrow(random_seating)
+
+probability_decreasing_heights
+```
+
+5. I roll six dice:
+
+1. what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
+2. what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the dice regardless of order?
+
+```{r}
+s_six_dice <- rolldie(6)
+
+in_order_left_to_right <- s_six_dice %>%
+  filter(X1 == 6, X2 == 5, X3 == 4, X4 == 3, X5 == 2, X6 == 1)
+
+probability_in_order = nrow(in_order_left_to_right)/ nrow(s_six_dice)
+
+probability_in_order
+
+probability_to_see_each_number <- (6*5*4*3*2*1) / nrow(s_six_dice)
+
+probability_to_see_each_number
+
+```
+
+6. If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
+
+```{r}
+chances_of_card_being_spade = 12 / 24
+chances_of_card_being_spade
+```
+
+7. Eight patients: Alice, Bob, Carmen, Dinesh, Ella, Fergus, Gianna and Henry are waiting to see a doctor, but only five appointment slots are left today.
+
+1.In how many different orders can the doctor see patients today?
+```{r}
+# create vector of choices contains eight patients, n = 10.
+
+patients <- c("Alice", "Bob", "Carmen", "Dinesh", "Ella", "Fergus", "Gianna", "Henry")
+
+# Only 5 appointment slots left for today, r = 5
+# Don't replace a patient once chosen: repeats.allowed = FALSE
+
+different_orders <- as_tibble(permutations(n = 8, 
+                                  r = 5, 
+                                  v = patients, repeats.allowed = FALSE)) %>%
+                                  nrow()
+
+different_orders
+```
+2. What is the probability of Gianna and Danesh both being seen today?
+```{r}
+different_orders_filter <- as_tibble(permutations(n = 8, 
+                                  r = 5, 
+                                  v = patients, repeats.allowed = FALSE)) %>%
+  filter( V1 == "Gianna", V2 == "Dinesh")
+
+probability_of_gianna_dinesh <- nrow(different_orders_filter)/ nrow(different_orders)
+
+probability_of_gianna_dinesh
+```
+
+3. What is the probability of Gianna being seen before Dinesh today?
+```{r}
+
+```
+
+4.  Carmen and Henry have now been triaged as high priority and will be seen in the first two available slots, although their order hasn’t yet been determined. In how many different orders can the patients now be seen?
+```{r}
+# Carman and Henry and be seen in 2 orders,either Carman goes first or Henry Goes First
+
+# Rest of the patioets there are 7 patients left and there are 3 slots available, this can be done as follows :
+
+patient_new <- c("Alice", "Bob", "Dinesh", "Ella", "Fergus", "Gianna")
+
+# Only 5 appointment slots left after Carman and Henry have taken the first two slots, r = 3
+# Don't replace a patient once chosen: repeats.allowed = FALSE
+
+different_orders <- as_tibble(permutations(n = 6, 
+                                  r = 3, 
+                                  v = patient_new, repeats.allowed = FALSE)) %>%
+                                  nrow() 
+
+different_orders * 2
+
+
+
+```
+
+8. If order is not significant, how many ways are there to select a 5 student quiz team from a group of 8 students?
+
+```{r}
+quiz_taem <- choose(8,5)
+quiz_taem
+```
+
