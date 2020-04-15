@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(prob)
+library(tidyverse)
+library(janitor)
+
+cellphone_brands <- read_csv("data/20190928-items.csv")
+clean_names(cellphone_brands)
+head(cellphone_brands)
+dim(cellphone_brands)
+
+view(cellphone_brands)
+```
+
+```{r}
+cellphone_brand <- cellphone_brands %>%
+    filter( brand == "Samsung")
+   
+cellphone_brand
+
+```
+
+```{r}
+rating_frequency_table <- table(cellphone_brand$rating)
+rating_frequency_table
+```
+
+```{r}
+library(janitor)
+
+rating_distribution <- cellphone_brand %>%
+  tabyl(rating)
+
+rating_distribution
+```
+Lets plot the distribution
+```{r}
+rating_distribution %>%
+  ggplot(aes(x= rating, y = percent)) +
+  geom_col()
+```
+
+Calculating Mean
+```{r}
+cellphone_brand %>%
+  summarise( mean_rating = mean(rating))
+```
+Calculating Median
+```{r}
+cellphone_brand %>%
+  summarise( median_rating = median(rating))
+```
+
+Mode
+```{r}
+# let's make our mode function 
+getMode <- function(data){
+
+  tabled_data <- table(data)
+  table_names <- names(tabled_data)
+  
+  return( table_names[tabled_data == max(tabled_data)] )
+  
+}
+
+# call the mode function 
+cellphone_brand %>%
+  summarise(mode_rating = getMode(rating))
+
+```
+
+Outliers
+```{r}
+
+ratings_box <- boxplot(cellphone_brand$rating)
+
+```
+skim() function and the 'five number summary'
+```{r}
+library(skimr)
+cellphone_brand %>%
+  select(rating) %>%
+  skim()
+  
+```
+
+```{r}
+cellphone_rating_stats <- cellphone_brand %>%
+  summarise(
+    num = n(),
+    mean = mean(rating),
+    sd = sd(rating)
+  )
+cellphone_rating_stats
+```
+
+
+
+Now let’s build a fit a normal distribution to our data:
+
+```{r}
+cellphone_brand %>% 
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), col = "white", bins = 25) +
+  stat_function(
+    fun = dnorm, 
+    args = list(
+      mean = cellphone_rating_stats$mean, 
+      sd = cellphone_rating_stats$sd
+    ),
+    col = "red"
+  )
+```
+
+```{r}
+
+cellphone_brand %>%
+  filter(rating >= cellphone_rating_stats$mean - cellphone_rating_stats$sd) %>%
+  filter(rating <= cellphone_rating_stats$mean + cellphone_rating_stats$sd) %>%
+  summarise(prop_within_1sd = n() / nrow(cellphone_brand))
+
+```
