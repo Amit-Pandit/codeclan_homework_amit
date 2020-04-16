@@ -1,0 +1,75 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(infer)
+library(janitor)
+```
+
+```{r}
+ames <- read_csv("data/ames.csv") %>%
+  clean_names()
+
+glimpse(ames)
+```
+Plot a histogram of sale_price. Is the distribution normal?
+```{r}
+ames %>%
+  ggplot(aes(x = sale_price)) +
+  geom_histogram(col = "white")
+```
+Calculate the population parameter mean of sale_price. Store it in a variable, as we’ll need this value later when we check if each CI contains the parameter value or not.
+```{r}
+mean_ames <- mean(ames$sale_price)
+
+mean_ames
+```
+take 1000 random samples each of size 100 from sale_price in ames
+```{r}
+rep_sample_1000 <- ames %>%
+  rep_sample_n(size = 100, reps = 1000) %>%
+  group_by(replicate) %>%
+  summarise(
+    mean_sale_price = mean(sale_price)
+  )
+
+
+rep_sample_1000 %>%
+  ggplot(aes(x = mean_sale_price)) +
+  geom_histogram(col = "white")
+```
+Calculate SD of rep_sample_1000
+```{r}
+rep_sample_1000 %>%
+  summarise(stderr = sd(mean_sale_price))
+```
+2. create a boostrap sampling distribution of mean(sale_price) from each 100-observation sample (use 1000 reps)
+
+Step : 1 ( First create a single_sample out of the 1000 samples we have created)
+```{r}
+single_sample_1000 <- ames %>%
+  rep_sample_n(size = 1000, reps = 1) %>%
+  ungroup() %>%
+  select(sale_price)
+
+single_sample_1000
+
+```
+Generate bootstrap distribution
+```{r}
+bootstrap_rep_sample <- single_sample_1000 %>%
+  specify(response = sale_price) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+bootstrap_rep_sample
+```
+3. calculate the 95% CI for each bootstrap distribution
+```{r}
+bootstrap_tenure_ci <- bootstrap_rep_sample %>%
+  get_confidence_interval(level = 0.95, type = "percentile")
+bootstrap_tenure_ci
+```
+

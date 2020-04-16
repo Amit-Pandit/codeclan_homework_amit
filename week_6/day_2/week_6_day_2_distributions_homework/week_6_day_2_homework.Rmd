@@ -123,3 +123,18 @@ cellphone_brand %>%
   summarise(prop_within_1sd = n() / nrow(cellphone_brand))
 
 ```
+
+```{r}
+cellphone_brand %>%
+  filter(rating >= cellphone_rating_stats$mean - 2 * cellphone_rating_stats$sd) %>%
+  filter(rating <= cellphone_rating_stats$mean + 2 * cellphone_rating_stats$sd) %>%
+  summarise(prop_within_2nd = n() / nrow(cellphone_brand))
+```
+
+```{r}
+cellphone_brand %>%
+  filter(rating >= cellphone_rating_stats$mean - 3 * cellphone_rating_stats$sd) %>%
+  filter(rating <= cellphone_rating_stats$mean + 3 * cellphone_rating_stats$sd) %>%
+  summarise(prop_within_3rd = n() / nrow(cellphone_brand))
+```
+
