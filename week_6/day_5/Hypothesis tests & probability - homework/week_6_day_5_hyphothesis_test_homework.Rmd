@@ -89,7 +89,7 @@ First, we’ll set the conventional significance level α=0.05 and write our hyp
 
 
 H0: μsleep(Omnivores)−μsleep(Herbivores) = 0
-Ha: μsleep(Omnivores)−μsleep(Herbivores) < 0
+Ha: μsleep(Omnivores)−μsleep(Herbivores) > 0
 
 Let’s visualise the distributions and check the sizes of both samples.
 ```{r}

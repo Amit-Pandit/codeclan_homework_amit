@@ -1,0 +1,176 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(tsibble)
+library(tsibbledata)
+library(feasts)
+
+date1 <- ymd_hms("2017-04-22 22:01:18")
+date2 <- ymd_hms("2001-11-07 10:09:56")
+```
+
+Homework: Dates and Times
+
+Question 1
+
+Extract the different components (year, month, mday, yday, wday) from the variable date1. Add the labels to the month and do not abbreviate the month labels.
+```{r}
+library(lubridate)
+year(date1)
+month(date1)
+mday(date1)
+yday(date1)
+wday(date1)
+```
+```{r}
+month(date1, label = TRUE, abbr = FALSE)
+```
+
+Question 2
+
+Add 14 days to your date1 variable and store it in a variable called next_fortnight. Take away 10 years from your date2 variable, and store it in previous_decade.
+
+```{r}
+next_fortnight <- date1 + ddays(14)
+
+previous_decade <- date2 - dyears(10)
+
+next_fortnight
+previous_decade
+```
+
+Question 3
+
+Create a variable called this_year which contains today’s date. Then create an interval object which uses this_year and the previous_decade variable you made above. Store it in interval_years. Hint: you’ll need to use lubridate::interval in order to get the right function, as tsibble has one too
+
+```{r}
+
+this_year <-today()
+
+interval_years <- lubridate::interval(this_year, previous_decade)
+
+interval_years
+```
+
+Question 4
+
+Change the time zone of both your date variables to “America/New_York”, and call them nyc_date1 and nyc_date2.
+
+```{r}
+nyc_date1 <- ymd_hms(date1, tz = "America/New_York")
+  
+nyc_date2 <- ymd_hms(date2, tz = "America/New_York")
+
+nyc_date1
+nyc_date2
+```
+
+Question 5
+
+Use the flights data from the nycflights13 dataset. Make a date-time column called departure_date from the year, month, day, hour, and minute variables in the flights tibble.
+
+```{r}
+library(nycflights13)
+
+flights %>%
+  mutate(departure_date = make_datetime(year = year, month = month, day = day, hour = hour, min = minute))
+```
+
+Time series familiarity
+
+Question 6
+Start with the weather data from the nycflights13 package. Select all the variables related to temperature, humidity, and precipitation, and pick out the key and index variables. Have a look at your data, and write a small description of the time series you observe.
+
+```{r}
+library(tsibble)
+library(tsibbledata)
+library(fable)
+library(feasts)
+library(tidyverse)
+library(lubridate)
+
+nycflights13::weather
+
+weather_new <- nycflights13::weather %>%
+  mutate(date = make_datetime(year = year, month = month, day = day, hour = hour)) %>%
+  select(origin,date,time_hour,temp,humid,precip)
+
+weather_new
+```
+
+Index Variables : time_hour
+Key : temp , humid, percep
+
+We can observe that temp is warmer in july in comparison to the rest of the year, can see a pattern of the seasons where in it colder during the winters in December.
+
+Question 7
+Change the weather data into a tsibble.
+```{r}
+
+weather_data <- as_tsibble(weather_new)
+                  
+```
+
+Question 8
+
+Add a year and month column to your weather data, and create a basic line plot which shows the temperature data from each airport over time. Have a think back to what you learned in visualisation week, and think about whether plotting the whole time series in one go is adequate here? Write down your suggestions for what could be done to make a better and more informative plot.
+
+Answer :
+
+There is a lot of data points here, as information is on a hourly basis, this can be changed to a daily basis to reduce the number of data points and to meke the data to look more informative.
+
+```{r}
+weather_data <- nycflights13::weather %>%
+  select(origin,time_hour,temp,humid,precip,year,month)
+
+ggplot(weather_data) + 
+  geom_line(aes(x = time_hour, y = temp), colour = "blue")
+```
+Answer :
+
+There is a lot of data points here, as information is on a hourly basis, this can be changed to a daily basis to reduce the number of data points and to meke the data to look more informative.
+
+For example, if we wanted to summarise the info by day (rather than hour), we could do the following:
+
+```{r}
+# aggregate by date
+elec_date <- weather_data %>%
+  index_by(date = ~ as_year(.)) %>%
+  summarise(temp_mean = mean(temp, na.rm = TRUE))
+
+# make a plot
+ggplot(data = elec_date, aes(x = day, y = temp_mean)) +
+  geom_line()
+```
+
+Question 9
+
+Choose an appropriate rolling window and calculate a moving average for your weather temperature data for each airport origin. Create a useful plot which overlays the original time series data and the rolling average data. Make sure the graph is easy for others to understand (Hint: you might want to facet_wrap). Finally, write a summary of why you chose the time window you did, and describe any trends you see.
+
+```{r}
+# calculate a rolling window 
+weather_rolling <- weather_data %>% 
+  group_by_key() %>% 
+  mutate(temp_ma = slide_dbl(Temperature, ~ mean(., na.rm = TRUE), .size = 1000))
+
+# plot the data 
+ggplot(weather_rolling) + 
+  geom_line(aes(x = Date, y = temp), colour = "grey") + 
+    geom_line(aes(x = Date, y = temp_ma), colour = "red")
+
+```
+
+
+Question 10
+
+Downsample your data so that you plot daily temperature data for each airport, instead of hourly data.
+
+```{r}
+
+```
+
