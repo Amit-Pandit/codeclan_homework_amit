@@ -104,7 +104,7 @@ weather_new
 ```
 
 Index Variables : time_hour
-Key : temp , humid, percep
+Key : origin
 
 We can observe that temp is warmer in july in comparison to the rest of the year, can see a pattern of the seasons where in it colder during the winters in December.
 
@@ -112,7 +112,8 @@ Question 7
 Change the weather data into a tsibble.
 ```{r}
 
-weather_data <- as_tsibble(weather_new)
+weather_tsible <- weather_new %>%
+  as_tsibble(index = time_hour, key = origin)
                   
 ```
 
