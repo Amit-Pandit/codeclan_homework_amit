@@ -126,7 +126,7 @@ forecast_test <- fit_test %>%
 # Plot forecasts against actual values
 forecast_test %>%
   autoplot(train, level = NULL) +
-    autolayer(filter_index(tsibbledata::nyc_bikes, "2018-10" ~ .), color = "black") +
+    autolayer(nyc_bikes_filled, color = "black") +
     ggtitle("Forecasts for quarterly NYC Cycles") +
     xlab("Month") + ylab("Number of Bikes hired") +
     guides(colour=guide_legend(title="Forecast"))
@@ -138,10 +138,15 @@ Make a simple ggplot (geom_point) which plots the start longitude and latitudes 
 Do the same for the end longitude and latitudes.
 
 ```{r}
-library(sf)
+accuracy_model <- fabletools::accuracy(forecast_test, nyc_bikes_filled)
 ```
 
 
+```{r}
+accuracy_model %>% 
+  select(-.type) %>%
+  arrange(RMSE)
+```
 
 
 

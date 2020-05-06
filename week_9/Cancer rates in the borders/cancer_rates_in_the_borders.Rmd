@@ -1,0 +1,137 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+```
+
+```{r}
+geographic_lables <- read_csv("geography_codes_and_labels_hb2014_01042019.csv")
+
+View(geographic_lables)
+```
+
+```{r}
+cancer_opendata <- read_csv("opendata_inc9418_region.csv")
+
+View(cancer_opendata)
+```
+
+```{r}
+open_data <- read_csv("opendata_inc9418_hb.csv")
+```
+
+```{r}
+View(open_data)
+```
+
+```{r}
+scotland_open_data <- read_csv("opendata_inc9418_scotland.csv")
+
+View(scotland_open_data)
+```
+
+```{r}
+open_data_border <- open_data %>%
+                      filter(HB == "S08000016") %>%
+                      filter(CancerSite == "All cancer types")
+theme_qb <- 
+  theme(
+    text = element_text(size = 12),
+    title = element_text(size = 14),
+    axis.text = element_text(size = 10),
+    panel.background = element_rect(fill = "white"),
+    panel.grid = element_line(colour = "grey90", linetype = "dashed")
+  )                      
+                      
+ggplot(open_data_border) +
+  aes(x = Year, y = IncidencesAllAges, color = Sex) +
+  geom_line()+
+  scale_x_continuous("Years") +
+  scale_y_continuous("Total Number of Cancer Incidences") +
+  geom_point()+
+  theme_qb+
+  ggtitle(
+    "Incidence of cancer in NHS Borders",
+     subtitle = "1994 - 2018"
+  )
+
+  
+```
+```{r}
+open_data_border <- open_data %>%
+                      filter(HB == "S08000016") %>%
+                      filter(CancerSite != "All cancer types") %>%
+                      filter(Sex == c("Male", "Female")) %>%
+                      group_by(Sex) %>%
+                      summarise(Total_Incidences = sum(IncidencesAllAges))
+
+View(open_data_border)
+                  
+theme_qb <- 
+  theme(
+    text = element_text(size = 12),
+    title = element_text(size = 14),
+    axis.text = element_text(size = 10),
+    panel.background = element_rect(fill = "white"),
+    panel.grid = element_line(colour = "grey90", linetype = "dashed")
+  )                      
+                      
+                      
+                     
+
+ggplot(open_data_border) +
+  aes(x = Sex, y = Total_Incidences) +
+  geom_col()+
+  #scale_x_continuous("Years") +
+  #scale_y_continuous("Total Number of Cancer Incidences") +
+  theme_qb+
+  scale_fill_manual(values = c('green', 'blue')) +
+  ggtitle(
+    "Total Incidence of cancer in NHS Borders 1994 - 2018",
+    subtitle = "Total = 17,680 - Out of which Female - 8839 / Male - 8841"
+  )
+```
+
+```{r}
+
+open_data_border_all_cnacer <- open_data %>%
+                      filter(HB == "S08000016") %>%
+                      filter(CancerSite != "All cancer types") %>%
+                      filter(Sex == c("Male", "Female")) %>%
+                      group_by(CancerSite) %>%
+                      #group_by(Sex) %>%
+                      group_by(CancerSite) %>%
+                      summarise(Total_Incidences = sum(IncidencesAllAges)) %>%
+                      arrange(desc(Total_Incidences))
+                      
+                      
+                      
+
+View(open_data_border_all_cnacer)
+                     
+ theme_qb <- 
+  theme(
+    text = element_text(size = 12),
+    title = element_text(size = 14),
+    axis.text = element_text(size = 10),
+    panel.background = element_rect(fill = "white"),
+    panel.grid = element_line(colour = "grey90", linetype = "dashed")
+  )                      
+                      
+ggplot(open_data_border_all_cnacer) +
+  aes(x = CancerSite, y = Total_Incidences) +
+  geom_col()+
+#  scale_x_continuous("Sex") +
+#  scale_y_continuous("Total Number of Cancer Incidences") +
+  theme_qb+
+  ggtitle(
+    "Total Incidence of cancer in NHS Borders Male / Female",
+    subtitle = "1994 - 2018"
+  )
+```
+
