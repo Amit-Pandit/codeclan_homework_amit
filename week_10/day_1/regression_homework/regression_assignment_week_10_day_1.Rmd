@@ -1,0 +1,62 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggfortify)
+library(broom)
+library(modelr)
+```
+
+```{r}
+project <-read_csv("data/project_management.csv")
+```
+
+```{r}
+project
+```
+
+```{r}
+model <- lm(estimated_length ~ actual_length, data = project)
+
+model %>%
+  ggplot(aes(x = actual_length, y = estimated_length)) +
+  geom_point()
+  
+```
+```{r}
+plot(model)
+```
+
+```{r}
+project <- project %>%
+  add_predictions(model) 
+
+project %>%
+  ggplot(aes(x = actual_length)) +
+  geom_point(aes(y = estimated_length)) +
+  geom_line(aes(y = pred), col = "red")
+```
+
+```{r}
+project2 <- project[-c(5),]
+  
+model2 <- lm(estimated_length ~ actual_length, data = project2)
+```
+
+```{r}
+project2 <- project2 %>%
+  add_predictions(model2) 
+
+project2 %>%
+  ggplot(aes(x = actual_length)) +
+  geom_point(aes(y = estimated_length)) +
+  geom_line(aes(y = pred), col = "blue")
+```
+
+```{r}
+plot(model2)
+```
+

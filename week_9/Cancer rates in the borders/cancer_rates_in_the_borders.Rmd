@@ -105,9 +105,10 @@ open_data_border_all_cnacer <- open_data %>%
                       filter(Sex == c("Male", "Female")) %>%
                       group_by(CancerSite) %>%
                       #group_by(Sex) %>%
-                      group_by(CancerSite) %>%
+                      #group_by(CancerSite) %>%
                       summarise(Total_Incidences = sum(IncidencesAllAges)) %>%
-                      arrange(desc(Total_Incidences))
+                      arrange(desc(Total_Incidences)) %>%
+                      top_n(10) 
                       
                       
                       
@@ -126,11 +127,12 @@ View(open_data_border_all_cnacer)
 ggplot(open_data_border_all_cnacer) +
   aes(x = CancerSite, y = Total_Incidences) +
   geom_col()+
+  coord_flip()+
 #  scale_x_continuous("Sex") +
-#  scale_y_continuous("Total Number of Cancer Incidences") +
+  xlab("Cancer Sites") +
   theme_qb+
   ggtitle(
-    "Total Incidence of cancer in NHS Borders Male / Female",
+    "10 most common Cancer Incidences",
     subtitle = "1994 - 2018"
   )
 ```
