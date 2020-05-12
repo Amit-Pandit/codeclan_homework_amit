@@ -1,0 +1,140 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+```
+
+```{r}
+diamonds <- read_csv("diamonds.csv")
+```
+
+```{r}
+View(diamonds)
+
+```
+
+```{r}
+diamonds_temp <- diamonds %>%
+  select("carat", "x", "y", "z")
+```
+
+```{r}
+library(GGally)
+
+ggpairs(diamonds_temp)
+```
+As we can see there is substancial correlation between these 4 variables,
+Let us drop x , y and z and work only with carat hence forth in the data set
+```{r}
+diamonds <- diamonds %>%
+  select(-c("X1", "x", "y", "z"))
+         
+View(diamonds)
+
+```
+
+Let us now create a regression model for the price of a diamond in terms of the possible predictor variables in the dataset.
+
+Let us Use ggpairs() to investigate correlations between price and the predictors.
+```{r}
+ggpairs(diamonds)
+```
+
+Perform further ggplot visualisations of any significant correlations you find.
+```{r}
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point()
+```
+
+```{r}
+diamonds %>%
+  ggplot(aes(x = cut , y = price)) +
+  geom_boxplot()
+```
+
+```{r}
+diamonds %>%
+  ggplot(aes(x = color , y = price)) +
+  geom_boxplot()
+```
+
+```{r}
+diamonds %>%
+  ggplot(aes(x = clarity , y = price)) +
+  geom_boxplot()
+```
+
+
+
+
+
+
+Now we can try a regression fit using one or more of the categorical predictors cut, clarity and color, so let’s investigate these predictors:
+Investigate the factor levels of these predictors.
+Looks like we might have 
+4 dummies for Cut    :Fair, Good, Very Good, Premium, Ideal 
+6 dummies for Color  : D , E , F, G, H, I, J
+7 dumies for Clarity :I1, SI2, SI1, VS2, VS1, VVS2, VVS1, IF
+
+Please note in the outcome we will always loose 1 varaible column.
+
+```{r}
+diamonds_dummycut <- diamonds %>%
+  fastDummies::dummy_cols(select_columns = "cut", remove_first_dummy = TRUE) 
+
+diamonds_dummycut
+```
+
+```{r}
+diamonds_dummycolor <- diamonds %>%
+  fastDummies::dummy_cols(select_columns = "color", remove_first_dummy = TRUE) 
+
+diamonds_dummycolor
+```
+
+```{r}
+diamonds_dummyclarity <- diamonds %>%
+  fastDummies::dummy_cols(select_columns = "clarity", remove_first_dummy = TRUE) 
+
+diamonds_dummyclarity
+```
+
+Going forward we’ll let R handle dummy variable creation for categorical predictors in regression fitting (remember lm() will generate the correct numbers of dummy levels automatically, absorbing one of the levels into the intercept as a reference level)
+
+Let us now start with simple linear regression.
+
+Let us Regress price on carat and check the regression diagnostics.
+
+```{r}
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+model <- lm(price ~ carat, data = diamonds)
+summary(model)
+```
+We can see that R-squared:  0.8493 (coefficient of determination) is almost close to 1 and we can also see p Value has got *** , hence we can say that its a good fit.
+
+let us also take a look at the diagnostic plots
+
+```{r}
+plot(model)
+```
+Obesrvations :
+
+Plots dont look that great, have concerns with Scale-Location as we can see a slight yet constant rise starting from 0.7 till the end
+
+Also, Normal Q-Q graph has quiet a considerable number of deviations both top and bottom.
+
+```{r}
+model2 <- lm(price ~ carat + cut + clarity+ color, data = diamonds)
+
+summary(model2)
+```
+

@@ -19,13 +19,25 @@ project
 ```
 
 ```{r}
-model <- lm(estimated_length ~ actual_length, data = project)
 
-model %>%
-  ggplot(aes(x = actual_length, y = estimated_length)) +
+model <- project %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
   geom_point()
+
+model
+
   
 ```
+
+```{r}
+model <- model +
+  geom_text(aes(label = 1:nrow(project)), nudge_x = 0.2, nudge_y = 1)
+
+model
+```
+
+
+
 ```{r}
 plot(model)
 ```
