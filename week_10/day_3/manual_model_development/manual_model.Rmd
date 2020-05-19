@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(ggiraphExtra)
+library(GGally)
+```
+
+```{r}
+housing_sales <- read_csv("data/kc_house_data.csv")
+```
+
+```{r}
+View(housing_sales)
+```
+
+```{r}
+houses_tidy <- housing_sales%>%
+                select(-c(id,date,zipcode,sqft_living15,sqft_lot15))
+```
+
+```{r}
+View(houses_tidy)
+```
+Q.Have a think about how to treat waterfront. Should we convert its type?
+
+Ans. It looks fine a combination of 0 and 1 which is ok with us.
+```{r}
+houses_tidy_numeric <- houses_tidy %>%
+  select_if(is.numeric)
+
+houses_tidy_nonnumeric <- houses_tidy %>%
+  select_if(function(x) !is.numeric(x))
+
+houses_tidy_nonnumeric$price <- houses_tidy$price
+
+ggpairs(houses_tidy_numeric)
+ggpairs(houses_tidy_nonnumeric)
+```
+

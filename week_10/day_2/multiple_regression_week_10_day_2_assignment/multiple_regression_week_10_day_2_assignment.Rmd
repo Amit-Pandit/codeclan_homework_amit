@@ -41,6 +41,10 @@ Let us Use ggpairs() to investigate correlations between price and the predictor
 ```{r}
 ggpairs(diamonds)
 ```
+What we are checking with the box plots that they are scattered and not follow a pattern...like a staright line(cut,color,clarity)
+
+
+
 
 Perform further ggplot visualisations of any significant correlations you find.
 ```{r}
