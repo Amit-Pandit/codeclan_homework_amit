@@ -1,0 +1,147 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(readxl)
+library(tidyverse)
+library(janitor)
+
+telicom_data <- read_excel("telecomms_churn.xlsx") %>%
+                  clean_names()%>%
+                  drop_na() %>%
+                  select(c(-customer_id, - total_charges))
+                  
+```
+
+```{r}
+View(telicom_data)
+```
+
+```{r}
+summary(telicom_data)
+```
+
+```{r}
+
+telicom_data_clean <- telicom_data %>%
+  mutate(gender = as.factor(gender),
+         senior_citizen = factor(senior_citizen, levels = c(0,1), labels = c("No","Yes")),
+         partner = as.factor(partner),
+         dependents = as.factor(dependents),
+         phone_service = as.factor(phone_service),
+         churn = as.factor(churn)
+  )
+
+telicom_data_clean
+```
+
+```{r}
+library(GGally)
+ggpairs(telicom_data_clean)
+```
+
+
+```{r}
+score_plot <- ggplot(telicom_data_clean) +
+  geom_jitter(aes(x = tenure, y = as.integer(churn)), shape = 1, 
+              position = position_jitter(h = 0.03))
+
+score_plot
+```
+
+Model 1 : Currn ~ Tenure
+The question is: how do we model this data? Is a simple linear regression a good idea? Let’s see…
+```{r}
+telecom_data_lin_model <- lm(as.integer(churn) ~ tenure, data = telicom_data_clean)
+
+```
+
+
+```{r}
+library(modelr)
+
+predict_lin <- tibble(tenure = seq(1, 72, 1)) %>%
+              add_predictions(telecom_data_lin_model)
+
+
+score_plot + 
+   geom_line(data = predict_lin, aes(x = tenure , y = pred), col = 'red')
+```
+
+
+Let’s plot the relationship between churn and ten
+
+
+```{r}
+telecom_data_logreg_model <- glm(churn ~ tenure, data = telicom_data_clean, family = binomial(link = 'logit'))
+
+telecom_data_logreg_model
+```
+
+
+Let’s plot the estimated probability as a function of tenure
+```{r}
+predict_log <- tibble(tenure = seq(1, 72,1)) %>%
+              add_predictions(telecom_data_logreg_model, type = 'response') # argument type = 'response' is used in glm models 
+score_plot + 
+   geom_line(data = predict_log, aes(x = tenure , y = pred), col = 'red')
+```
+
+Model 2 : Currn ~ Monthly_charges
+
+```{r}
+telecom_data_lin_model2 <- lm(as.integer(churn) ~ monthly_charges, data = telicom_data_clean)
+```
+
+```{r}
+score_plot2 <- ggplot(telicom_data_clean) +
+  geom_jitter(aes(x = monthly_charges, y = as.integer(churn)), shape = 1, 
+              position = position_jitter(h = 0.03))
+```
+
+```{r}
+predict_lin2 <- tibble(monthly_charges = seq(18.25, 118.75, 1)) %>%
+              add_predictions(telecom_data_lin_model2)
+
+
+score_plot2 + 
+   geom_line(data = predict_lin2, aes(x = monthly_charges , y = pred), col = 'red')
+```
+
+```{r}
+telecom_data_logreg_model2 <- glm(churn ~ monthly_charges, data = telicom_data_clean, family = binomial(link = 'logit'))
+
+telecom_data_logreg_model2
+```
+
+```{r}
+predict_log2 <- tibble(monthly_charges = seq(18.25, 118.75,1)) %>%
+              add_predictions(telecom_data_logreg_model2, type = 'response') # argument type = 'response' is used in glm models 
+score_plot2 + 
+   geom_line(data = predict_log2, aes(x = monthly_charges , y = pred), col = 'red')
+```
+
+Model 3 : Currn ~ senior_citizen
+
+```{r}
+telecom_data_lin_model3 <- lm(as.integer(churn) ~ senior_citizen, data = telicom_data_clean)
+```
+
+```{r}
+score_plot3 <- ggplot(telicom_data_clean) +
+  geom_jitter(aes(x = senior_citizen, y = as.integer(churn)), shape = 1, 
+              position = position_jitter(h = 0.03))
+
+score_plot3
+```
+
+```{r}
+predict_lin3 <- tibble(senior_citizen = seq(0, 1, 1)) %>%
+              add_predictions(telecom_data_lin_model3)
+
+
+score_plot3 + 
+   geom_line(data = predict_lin3, aes(x = senior_citizen , y = pred), col = 'red')
+```
+
