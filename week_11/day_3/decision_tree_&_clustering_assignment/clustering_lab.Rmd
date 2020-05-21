@@ -1,0 +1,166 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Loading the necessary library's
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggplot2)
+```
+
+Read the data
+```{r}
+computers <- read_csv("data/computers.csv")
+
+head(computers)
+```
+
+Lets clean the names
+```{r}
+computers <- computers %>%
+  clean_names()
+```
+
+Select the relevant columns
+```{r}
+computers <- computers %>%
+  select(c(hard_drive = hd, random_access_memory = ram))
+
+computers
+```
+
+```{r}
+summary(computers)
+```
+Let us now scale the data
+```{r}
+computers_scale <- computers %>%
+                  mutate_all(scale)
+
+computers_scale
+```
+
+lets now plot this data as its scaled and take a look at it
+
+```{r}
+ggplot(computers_scale , aes(hard_drive, random_access_memory))+
+  geom_point()
+```
+
+On the looks of it, we can see that there are at least 3 to 4 groups,
+
+However lets confirm the same by checking the value of K by using the 3 method's
+
+Method 1 - Elbow method
+
+```{r}
+library(factoextra)
+
+fviz_nbclust(computers_scale, kmeans, method = "wss", nstart = 25)
+```
+
+Looks like there are 2 strong bends in the elbow, first one is at 2 and the second is at 4,
+
+Lets check the other two methods and see what the outcome of k will be.
+
+Method 2 - Silhouette coefficient
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "silhouette", nstart = 25)
+```
+
+As we know the "Silhouette coefficient" takes the highets value of "k", this data set will not be of a good regerence as k 
+has been more or less constant after the 4th point, more importantly the highest value of "k" is at the 10th point,
+which we will not condider and will now consider the third methord which is Gap Statistics
+
+Method 3 - Gap statistic
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "gap_stat", nstart = 25, k.max = 10)
+```
+
+As all 3 method give quite different results it can be a sign that our data is not well suited for k-means clustering.
+
+However Let us go with the value of K being 7 and create clusters
+
+
+```{r}
+clustered_computers <- kmeans(computers_scale, centers = 7, nstart = 25)
+
+clustered_computers
+```
+
+So we have the size of our clusters
+cluste means, which point landed in each cluster,
+But more importantly we can see that there is a problem with "sum of squares within each cluster" 
+The values are very high, that means the points are quiet far away from each other within the cluster, which is not good news.
+
+Let us visualise this
+
+```{r}
+library(animation)
+
+computers_scale %>% 
+  kmeans.ani(centers = 7) 
+```
+
+The functions tidy(), augment() and glance() functions pull out the information we will be interested from kmeans in but in a ‘tidy’ format:
+```{r}
+library(broom)
+
+tidy(clustered_computers, 
+     col.names = colnames(computers_scale))
+```
+
+```{r}
+glance(clustered_computers)
+```
+
+And augment() gives us which cluster each observation in original data set has been assigned to (by feeding it both the clustered data and the original data):
+
+```{r}
+augment(clustered_computers, computers)
+```
+
+```{r}
+library(broom)
+
+# Set min & max number of clusters want to look at 
+max_k <- 20 
+
+k_clusters <- tibble(k = 1:max_k) %>%
+  mutate(
+    kclust = map(k, ~ kmeans(computers_scale, .x, nstart = 25)), 
+    tidied = map(kclust, tidy),
+    glanced = map(kclust, glance),
+    augmented = map(kclust, augment, computers)
+  )
+
+k_clusters
+```
+
+```{r}
+clusterings <- k_clusters %>%
+  unnest(glanced)
+```
+
+Another way to visualise the data is via ggplot. You can visualise for all the values of k 
+```{r}
+clusterings %>% 
+  unnest(cols = c(augmented)) %>%
+  filter(k <= 7) %>%
+ ggplot(aes(x = hard_drive, y = random_access_memory)) +
+  geom_point(aes(color = .cluster)) + 
+  facet_wrap(~ k)
+```
+
+```{r}
+ clusterings %>% 
+  unnest(augmented) %>%
+  filter(k == 2) %>%
+  group_by(.cluster) %>%
+  summarise(mean(hard_drive), mean(random_access_memory))
+```
+
+Although We see that the averages for hard_drive and RAM figures are quite different for each of the clusters which is a sign that the clusters are quite different. However the graphs and the fact that k value has constantly been varying over the three models, we would recomend looking at other methods of spliting the data rather than relying on K Means Clustering for this set of data.
