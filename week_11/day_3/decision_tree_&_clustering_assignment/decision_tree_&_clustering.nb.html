@@ -1751,9 +1751,63 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(janitor)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYamFuaXRvcuKAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6c3RhdHPigJk6XG5cbiAgICBjaGlzcS50ZXN0LCBmaXNoZXIudGVzdFxuIn0= -->
+<pre><code>
+Attaching package: ‘janitor’
+
+The following objects are masked from ‘package:stats’:
+
+    chisq.test, fisher.test</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh5YXJkc3RpY2spXG5gYGAifQ== -->
+<pre class="r"><code>library(yardstick)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRm9yIGJpbmFyeSBjbGFzc2lmaWNhdGlvbiwgdGhlIGZpcnN0IGZhY3RvciBsZXZlbCBpcyBhc3N1bWVkIHRvIGJlIHRoZSBldmVudC5cblNldCB0aGUgZ2xvYmFsIG9wdGlvbiBgeWFyZHN0aWNrLmV2ZW50X2ZpcnN0YCB0byBgRkFMU0VgIHRvIGNoYW5nZSB0aGlzLlxuXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJh5YXJkc3RpY2vigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g4oCYcGFja2FnZTpyZWFkcuKAmTpcblxuICAgIHNwZWNcbiJ9 -->
+<pre><code>For binary classification, the first factor level is assumed to be the event.
+Set the global option `yardstick.event_first` to `FALSE` to change this.
+
+
+Attaching package: ‘yardstick’
+
+The following object is masked from ‘package:readr’:
+
+    spec</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtb2RlbHIpXG5gYGAifQ== -->
+<pre class="r"><code>library(modelr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYbW9kZWxy4oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0cyBhcmUgbWFza2VkIGZyb20g4oCYcGFja2FnZTp5YXJkc3RpY2vigJk6XG5cbiAgICBtYWUsIG1hcGUsIHJtc2VcbiJ9 -->
+<pre><code>
+Attaching package: ‘modelr’
+
+The following objects are masked from ‘package:yardstick’:
+
+    mae, mape, rmse</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShmYXN0RHVtbWllcylcbmxpYnJhcnkoYnJvb20pXG5gYGAifQ== -->
+<pre class="r"><code>library(fastDummies)
+library(broom)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYYnJvb23igJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g4oCYcGFja2FnZTptb2RlbHLigJk6XG5cbiAgICBib290c3RyYXBcbiJ9 -->
+<pre><code>
+Attaching package: ‘broom’
+
+The following object is masked from ‘package:modelr’:
+
+    bootstrap</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShycGFydClcbmxpYnJhcnkocnBhcnQucGxvdClcbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShmYWN0b2V4dHJhKVxuYGBgIn0= -->
+<pre class="r"><code>library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(factoextra)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2VsY29tZSEgV2FudCB0byBsZWFybiBtb3JlPyBTZWUgdHdvIGZhY3RvZXh0cmEtcmVsYXRlZCBib29rcyBhdCBodHRwczovL2dvby5nbC92ZTNXQmFcbiJ9 -->
+<pre><code>Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1790,11 +1844,42 @@ cols(
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShhdm9jYWRvKVxuYGBgIn0= -->
 <pre class="r"><code>summary(avocado)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIFgxICAgICAgICAgICAgIERhdGUgICAgICAgICAgICAgQXZlcmFnZVByaWNlICAgIFRvdGFsIFZvbHVtZSAgICAgICAgICAgNDA0NiAgICAgICAgICAgICAgIDQyMjUgICAgICAgICAgICAgICA0NzcwICAgICAgICBcbiBNaW4uICAgOiAwLjAwICAgTWluLiAgIDoyMDE1LTAxLTA0ICAgTWluLiAgIDowLjQ0MCAgIE1pbi4gICA6ICAgICAgODUgICBNaW4uICAgOiAgICAgICAwICAgTWluLiAgIDogICAgICAgMCAgIE1pbi4gICA6ICAgICAgMCAgXG4gMXN0IFF1LjoxMC4wMCAgIDFzdCBRdS46MjAxNS0xMC0yNSAgIDFzdCBRdS46MS4xMDAgICAxc3QgUXUuOiAgIDEwODM5ICAgMXN0IFF1LjogICAgIDg1NCAgIDFzdCBRdS46ICAgIDMwMDkgICAxc3QgUXUuOiAgICAgIDAgIFxuIE1lZGlhbiA6MjQuMDAgICBNZWRpYW4gOjIwMTYtMDgtMTQgICBNZWRpYW4gOjEuMzcwICAgTWVkaWFuIDogIDEwNzM3NyAgIE1lZGlhbiA6ICAgIDg2NDUgICBNZWRpYW4gOiAgIDI5MDYxICAgTWVkaWFuIDogICAgMTg1ICBcbiBNZWFuICAgOjI0LjIzICAgTWVhbiAgIDoyMDE2LTA4LTEzICAgTWVhbiAgIDoxLjQwNiAgIE1lYW4gICA6ICA4NTA2NDQgICBNZWFuICAgOiAgMjkzMDA4ICAgTWVhbiAgIDogIDI5NTE1NSAgIE1lYW4gICA6ICAyMjg0MCAgXG4gM3JkIFF1LjozOC4wMCAgIDNyZCBRdS46MjAxNy0wNi0wNCAgIDNyZCBRdS46MS42NjAgICAzcmQgUXUuOiAgNDMyOTYyICAgM3JkIFF1LjogIDExMTAyMCAgIDNyZCBRdS46ICAxNTAyMDcgICAzcmQgUXUuOiAgIDYyNDMgIFxuIE1heC4gICA6NTIuMDAgICBNYXguICAgOjIwMTgtMDMtMjUgICBNYXguICAgOjMuMjUwICAgTWF4LiAgIDo2MjUwNTY0NyAgIE1heC4gICA6MjI3NDM2MTYgICBNYXguICAgOjIwNDcwNTczICAgTWF4LiAgIDoyNTQ2NDM5ICBcbiAgIFRvdGFsIEJhZ3MgICAgICAgICBTbWFsbCBCYWdzICAgICAgICAgTGFyZ2UgQmFncyAgICAgICBYTGFyZ2UgQmFncyAgICAgICAgICAgdHlwZSAgICAgICAgICAgICAgICB5ZWFyICAgICAgICAgcmVnaW9uICAgICAgICAgXG4gTWluLiAgIDogICAgICAgMCAgIE1pbi4gICA6ICAgICAgIDAgICBNaW4uICAgOiAgICAgIDAgICBNaW4uICAgOiAgICAgMC4wICAgTGVuZ3RoOjE4MjQ5ICAgICAgIE1pbi4gICA6MjAxNSAgIExlbmd0aDoxODI0OSAgICAgIFxuIDFzdCBRdS46ICAgIDUwODkgICAxc3QgUXUuOiAgICAyODQ5ICAgMXN0IFF1LjogICAgMTI3ICAgMXN0IFF1LjogICAgIDAuMCAgIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOjIwMTUgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNZWRpYW4gOiAgIDM5NzQ0ICAgTWVkaWFuIDogICAyNjM2MyAgIE1lZGlhbiA6ICAgMjY0OCAgIE1lZGlhbiA6ICAgICAwLjAgICBNb2RlICA6Y2hhcmFjdGVyICAgTWVkaWFuIDoyMDE2ICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gTWVhbiAgIDogIDIzOTYzOSAgIE1lYW4gICA6ICAxODIxOTUgICBNZWFuICAgOiAgNTQzMzggICBNZWFuICAgOiAgMzEwNi40ICAgICAgICAgICAgICAgICAgICAgIE1lYW4gICA6MjAxNiAgICAgICAgICAgICAgICAgICAgIFxuIDNyZCBRdS46ICAxMTA3ODMgICAzcmQgUXUuOiAgIDgzMzM4ICAgM3JkIFF1LjogIDIyMDI5ICAgM3JkIFF1LjogICAxMzIuNSAgICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOjIwMTcgICAgICAgICAgICAgICAgICAgICBcbiBNYXguICAgOjE5MzczMTM0ICAgTWF4LiAgIDoxMzM4NDU4NyAgIE1heC4gICA6NTcxOTA5NyAgIE1heC4gICA6NTUxNjkzLjcgICAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDoyMDE4ICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>       X1             Date             AveragePrice    Total Volume           4046               4225               4770        
+ Min.   : 0.00   Min.   :2015-01-04   Min.   :0.440   Min.   :      85   Min.   :       0   Min.   :       0   Min.   :      0  
+ 1st Qu.:10.00   1st Qu.:2015-10-25   1st Qu.:1.100   1st Qu.:   10839   1st Qu.:     854   1st Qu.:    3009   1st Qu.:      0  
+ Median :24.00   Median :2016-08-14   Median :1.370   Median :  107377   Median :    8645   Median :   29061   Median :    185  
+ Mean   :24.23   Mean   :2016-08-13   Mean   :1.406   Mean   :  850644   Mean   :  293008   Mean   :  295155   Mean   :  22840  
+ 3rd Qu.:38.00   3rd Qu.:2017-06-04   3rd Qu.:1.660   3rd Qu.:  432962   3rd Qu.:  111020   3rd Qu.:  150207   3rd Qu.:   6243  
+ Max.   :52.00   Max.   :2018-03-25   Max.   :3.250   Max.   :62505647   Max.   :22743616   Max.   :20470573   Max.   :2546439  
+   Total Bags         Small Bags         Large Bags       XLarge Bags           type                year         region         
+ Min.   :       0   Min.   :       0   Min.   :      0   Min.   :     0.0   Length:18249       Min.   :2015   Length:18249      
+ 1st Qu.:    5089   1st Qu.:    2849   1st Qu.:    127   1st Qu.:     0.0   Class :character   1st Qu.:2015   Class :character  
+ Median :   39744   Median :   26363   Median :   2648   Median :     0.0   Mode  :character   Median :2016   Mode  :character  
+ Mean   :  239639   Mean   :  182195   Mean   :  54338   Mean   :  3106.4                      Mean   :2016                     
+ 3rd Qu.:  110783   3rd Qu.:   83338   3rd Qu.:  22029   3rd Qu.:   132.5                      3rd Qu.:2017                     
+ Max.   :19373134   Max.   :13384587   Max.   :5719097   Max.   :551693.7                      Max.   :2018                     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXZvY2Fkb3NfdGlkeSA8LSBhdm9jYWRvICU+JSBcbiAgICAgICAgICAgICAgICBjbGVhbl9uYW1lcygpICU+JVxuICAgICAgICAgICAgICAgIHNlbGVjdCgtYyhcIngxXCIpKVxuICAgICAgICAgICAgICAgIFxuZ2xpbXBzZShhdm9jYWRvc190aWR5KVxuYGBgIn0= -->
+<pre class="r"><code>avocados_tidy &lt;- avocado %&gt;% 
+                clean_names() %&gt;%
+                select(-c(&quot;x1&quot;))
+                
+glimpse(avocados_tidy)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKYGBge3J9CmF2b2NhZG8gPC0gcmVhZF9jc3YoImRhdGEvYXZvY2Fkby5jc3YiKQoKVmlldyhhdm9jYWRvKQpgYGAKCmBgYHtyfQpzdW1tYXJ5KGF2b2NhZG8pCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQpgYGB7cn0KbGlicmFyeShqYW5pdG9yKQpsaWJyYXJ5KHlhcmRzdGljaykKbGlicmFyeShtb2RlbHIpCmxpYnJhcnkoZmFzdER1bW1pZXMpCmxpYnJhcnkoYnJvb20pCmxpYnJhcnkocnBhcnQpCmxpYnJhcnkocnBhcnQucGxvdCkKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoZmFjdG9leHRyYSkKYGBgCgpgYGB7cn0KYXZvY2FkbyA8LSByZWFkX2NzdigiZGF0YS9hdm9jYWRvLmNzdiIpCgpWaWV3KGF2b2NhZG8pCmBgYAoKYGBge3J9CnN1bW1hcnkoYXZvY2FkbykKYGBgCgpgYGB7cn0KYXZvY2Fkb3NfdGlkeSA8LSBhdm9jYWRvICU+JSAKICAgICAgICAgICAgICAgIGNsZWFuX25hbWVzKCkgJT4lCiAgICAgICAgICAgICAgICBzZWxlY3QoLWMoIngxIikpCiAgICAgICAgICAgICAgICAKZ2xpbXBzZShhdm9jYWRvc190aWR5KQpgYGAKCmBgYHtyfQoKYGBgCgo=</div>
 
 
 

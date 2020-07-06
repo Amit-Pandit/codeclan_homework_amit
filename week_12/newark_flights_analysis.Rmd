@@ -1,0 +1,154 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+BUSINESS QUESTION :
+
+You have been hired by Newark airport to investigate the effect of weather on aeroplane departure delays.
+
+They believe poor weather conditions are causing too many delays and want to invest in improving facilities, so that aircraft can take off in more types of weather. However, they do not fully understand how serious weather related delays are, and are not sure what type of weather they should be most concerned about. As part of investigating the effect of weather you should investigate other factors to understand how important weather is in comparison to them.
+
+They also want to understand how they compare to other New York airports.
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+flights <- read_csv("data/flights.csv")
+
+airlines <- read_csv("data/airlines.csv")
+
+airports <- read_csv("data/airports.csv")
+
+planes <- read_csv("data/planes.csv")
+
+weather <- read_csv("data/weather.csv")
+```
+
+```{r}
+summary(flights)
+dim(flights)
+
+summary(airlines)
+
+summary(airports)
+
+summary(planes)
+
+summary(weather)
+```
+Befor starting any sort of analysis let us first think about how an airport operates:
+
+No flights are always stationary at the airport, they arrive from somewhere.
+
+In our data sets we have scheduled arrival time / actual arrival time and if there was any delay in the flights.
+What is important to us are the flights which were delayed.( We need to check if there was any relationship between weather conditions at the time of arrival and the flights where in there was a delay in arrival)
+So we have 3 outcomes here - Arrived Late / Arrived on time / Arrived before time 
+
+Part 2 of this study is the time taken for prep of the aircraft 
+
+Again we can look at different outcomes :
+
+Arrived Lete - time toaken to prep - Late dep ( Interested )
+Arrived late - time taken for prep - On time departure ( Excellent - But not much interest to the study)
+Arrived late - time taken for prep - early departure ( Excellent - But not much interest to the study)
+
+Arrived on time - tome toaken to prep - Late dep ( Very Interested )
+Arrived on time - time taken for prep - On time departure ( Excellent - But not much interest to the study)
+Arrived late - time taken for prep - early departure ( Excellent - But not much interest to the study)
+
+Arrived early - time toaken to prep - Late dep ( Very much Interested )
+Arrived early - time taken for prep - On time departure ( Excellent - But not much interest to the study)
+Arrived early - time taken for prep - early departure ( Excellent - But not much interest to the study)
+
+
+That is part 1 of where in we are looking at Flights ...now we need to look at Weather and whats relevant to us
+
+So What do we have here : 26201 rows of information , lots of missing info in temp / dewp/ humid / precip / pressure 
+Important columns for us Visibility and we have hardly any NA's ( Only 11 which is great news) 
+Also Wind_speed / wind_direction / wind_gust , lesser amount of NA's.. guess we can extract some valuable details there as well.
+
+Exploring temp / dewp / humi
+
+There is a lot of missing information
+
+However let us first filter relevant information. 
+Firstly, lets pull out weather of Newark and then store it in a tibble names weather_newark
+Now, weather_newark has 8753 rows out of which only 204 rows have information 97.6% info is NA's
+More importantly the readings are taken at different hours of the day, so its obvious that conditions will change during morning / afternoon / evening / night. Hence there is a feeling that taking a mean or median of the missing data will not make sence and we will be forced to drop these three variables in our study. 
+
+```{r}
+newark_weather <- weather %>%
+  filter(origin == "EWR")
+
+View(newark_weather)
+```
+So What do we have here : 26201 rows of information , lots of missing info in temp / dewp/ humid / precip / pressure 
+Important columns for us Visibility and we have hardly any NA's ( Only 11 which is great news) 
+Also Wind_speed / wind_direction / wind_gust , lesser amount of NA's.. guess we can extract some valuable details there as well.
+
+
+Like we created a new tibble for newark_weather lets now create a new tibble for newark_flights
+```{r}
+newark_flights <- flights%>%
+  filter ( origin == "EWR")
+
+summary(newark_flights)
+dim(newark_flights)
+
+```
+Let us now join these two tibbles to create a new tibble having all relevant information we need
+
+```{r}
+library(dbplyr)
+
+newark_data <- left_join(newark_flights, newark_weather, "time_hour") %>%
+  select(time_hour, dep_delay, arr_delay, carrier, flight,tailnum, air_time, distance,temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib)
+
+View(newark_data)
+```
+
+Lets plot this and see if we can find any relation between flights delayed and influencing factors from weather ( Visibility)
+
+```{r}
+newark_data_delayed <- newark_data %>%
+  filter(dep_delay  > "0") # filtering flights which were delayed
+  
+summary(newark_data_delayed)
+ggplot(aes(x = dep_delay, y = visib)) +
+  geom_point()
+
+```
+
+( Temperature)
+```{r}
+newark_data %>%
+  filter(dep_delay  > "0") %>% # filtering flights which were delayed
+ggplot(aes(x = dep_delay, y = temp)) +
+  geom_point()
+```
+
+```{r}
+newark_flights_delayed <- newark_flights%>%
+  filter(dep_delay  > "0") 
+
+summary(newark_flights_delayed)
+```
+
+```{r}
+library(lubridate)
+
+newark_flights_delayed <- newark_flights_delayed %>%
+  mutate(dep_date_time = make_datetime(year, month, day, hour, minute))
+
+View(newark_flights_delayed)
+  
+```
+
+```{r}
+ggplot(newark_flights_delayed) + 
+  geom_line(aes(x = dep_date_time, y = dep_delay), colour = "purple")
+```
+

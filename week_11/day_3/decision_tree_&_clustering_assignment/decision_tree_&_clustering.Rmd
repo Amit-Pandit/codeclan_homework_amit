@@ -3,7 +3,15 @@ title: "R Notebook"
 output: html_notebook
 ---
 ```{r}
+library(janitor)
+library(yardstick)
+library(modelr)
+library(fastDummies)
+library(broom)
+library(rpart)
+library(rpart.plot)
 library(tidyverse)
+library(factoextra)
 ```
 
 ```{r}
@@ -14,5 +22,17 @@ View(avocado)
 
 ```{r}
 summary(avocado)
+```
+
+```{r}
+avocados_tidy <- avocado %>% 
+                clean_names() %>%
+                select(-c("x1"))
+                
+glimpse(avocados_tidy)
+```
+
+```{r}
+
 ```
 
